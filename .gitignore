@@ -1,0 +1,16 @@
+# PyInstaller 打包產物
+dist/
+build/
+*.spec
+
+# 打包用 venv
+.venv-build/
+
+# 結果檔（含設備 hostname / MAC）；build_versions.txt 例外，要進 repo
+*.txt
+!build_versions.txt
+
+# Python / macOS
+__pycache__/
+*.pyc
+.DS_Store
