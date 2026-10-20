@@ -5,6 +5,8 @@
 - **v4**：Python 腳本，需安裝 Python 與 `paramiko`
 - **v5**：功能與 v4 相同，可在 Windows 上打包成單一 exe，目標電腦不需安裝任何東西
 
+📊 [工具介紹簡報](https://yiing1208.github.io/all228x_factory_test_tool/)
+
 ## 下載
 
 Windows 10／11（x64）直接下載 exe 即可使用，不需安裝 Python：

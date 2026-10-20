@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ALL228X 測試工具教學</title>
+<style>
+:root{
+  --page:#e9edf2; --stage:#ffffff; --ink:#1b2430; --muted:#5b6776; --line:#d5dbe3; --soft:#f4f6f9;
+  --accent:#1f6feb; --run:#1f6feb; --run-bg:#dbe8fd;
+  --ok:#1a7f37; --ok-bg:#d8f1df; --bad:#c62828; --bad-bg:#fde4e4; --warn:#8a5a00; --warn-bg:#fff1c7;
+  --idle:#c3ccd7;
+  --font:"Microsoft JhengHei","PingFang TC","Noto Sans TC",system-ui,sans-serif;
+  --mono:Consolas,Menlo,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--page);color:var(--ink);font-family:var(--font);overflow:hidden}
+button,input,select{font-family:inherit;font-size:inherit}
+code,.mono{font-family:var(--mono)}
+
+/* 16:9 舞台，依視窗等比縮放 */
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;background:var(--stage);
+  transform-origin:center;box-shadow:0 6px 30px rgba(0,0,0,.12);border-radius:6px;overflow:hidden}
+.chrome-top{position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 32px;font-size:15px;color:var(--muted);border-bottom:1px solid var(--line);z-index:5;background:var(--stage)}
+.act-tag{display:inline-flex;gap:8px;align-items:center}
+.act-tag b{background:var(--ink);color:#fff;border-radius:4px;padding:2px 8px;font-weight:600}
+.chrome-bottom{position:absolute;bottom:0;left:0;right:0;height:48px;display:flex;align-items:center;
+  justify-content:center;gap:14px;border-top:1px solid var(--line);z-index:5;background:var(--stage)}
+.nav-btn{border:1px solid var(--line);background:#fff;border-radius:6px;padding:4px 14px;cursor:pointer;color:var(--ink)}
+.nav-btn:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px}
+.dots button{width:10px;height:10px;border-radius:50%;border:0;padding:0;background:var(--idle);cursor:pointer}
+.dots button.on{background:var(--ink)}
+.dots .gap{width:8px}
+
+.slide{position:absolute;top:44px;bottom:48px;left:0;right:0;padding:26px 48px 20px;display:none;flex-direction:column}
+.slide.active{display:flex;animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
+.sub{font-size:18px;color:var(--muted);margin:0 0 18px}
+.note{font-size:14px;color:var(--muted)}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:6px;padding:7px 16px;cursor:pointer;font-size:15px}
+.btn.ghost{background:#fff;color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.callout{border-left:4px solid var(--warn);background:var(--warn-bg);padding:8px 12px;border-radius:4px;font-size:15px}
+.callout.info{border-color:var(--accent);background:var(--run-bg)}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:13px;background:var(--soft);border:1px solid var(--line)}
+
+/* ---------- 0 封面 ---------- */
+.cover{justify-content:center;align-items:center;text-align:center}
+.cover h1{font-size:54px;margin-bottom:12px}
+.cover .sub{font-size:22px}
+.cover-devices{display:grid;grid-template-columns:repeat(10,64px);gap:14px 16px;margin:28px 0 18px}
+.dev{height:46px;border:2px solid var(--idle);border-radius:6px;background:var(--soft);position:relative;transition:all .35s}
+.dev::before{content:"";position:absolute;left:8px;bottom:8px;width:30px;height:4px;border-radius:2px;background:var(--idle);box-shadow:0 -8px 0 var(--idle)}
+.dev .led{position:absolute;right:8px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--idle);transition:all .35s}
+.dev.run{border-color:var(--run)}
+.dev.run .led{background:var(--run);box-shadow:0 0 10px var(--run);animation:blink .7s infinite alternate}
+.dev.done{border-color:var(--ok);background:var(--ok-bg)}
+.dev.done .led{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+@keyframes blink{to{opacity:.35}}
+
+/* ---------- 1 模擬器 ---------- */
+.race{display:grid;grid-template-columns:1fr 1fr;gap:28px;flex:1}
+.lane{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.lane h3{margin:0;font-size:20px}
+.lane .desc{font-size:14px;color:var(--muted);margin-top:-4px}
+.grid20{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.cell{position:relative;height:42px;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--soft);
+  display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted)}
+.cell .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--run-bg)}
+.cell.run{border-color:var(--run);color:var(--run)}
+.cell.done{border-color:var(--ok);color:var(--ok)}
+.cell.done .fill{width:100% !important;background:var(--ok-bg)}
+.cell span{position:relative}
+.slots{display:flex;gap:5px}
+.slot{flex:1;height:26px;border-radius:4px;border:1px dashed var(--idle);font-size:12px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.slot.busy{border:1px solid var(--run);background:var(--run-bg);color:var(--run)}
+.status{font-size:15px;min-height:22px}
+.count{font-size:26px;font-weight:700}
+.count small{font-size:15px;font-weight:400;color:var(--muted)}
+.race-ctrl{display:flex;gap:10px;align-items:center;margin-top:12px}
+.finish-badge{display:none;background:var(--ok);color:#fff;border-radius:4px;padding:2px 8px;font-size:13px;margin-left:8px}
+.finish-badge.show{display:inline-block}
+
+/* ---------- 2 輸送帶 ---------- */
+.belt-wrap{position:relative;height:300px;border:1px solid var(--line);border-radius:10px;background:var(--soft);overflow:hidden}
+.track{position:absolute;left:0;right:0;top:118px;height:12px;background:repeating-linear-gradient(90deg,#c8d0da 0 18px,#dfe5ec 18px 36px)}
+.gate{position:absolute;top:22px;width:170px;height:118px;border:3px solid var(--ink);border-bottom:0;border-radius:10px 10px 0 0;text-align:center;padding-top:6px;font-size:15px;font-weight:600}
+.gate .light{width:18px;height:18px;border-radius:50%;background:var(--idle);margin:6px auto 0;transition:all .25s}
+.gate .light.wait{background:#e0a800;box-shadow:0 0 10px #e0a800}
+.gate .light.ok{background:var(--ok);box-shadow:0 0 12px var(--ok)}
+.gate .light.bad{background:var(--bad);box-shadow:0 0 12px var(--bad)}
+.gate small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.bin{position:absolute;top:186px;width:220px;height:100px;border:2px dashed var(--bad);border-radius:8px;background:#fff;padding:6px 8px;font-size:13px}
+.bin.good{border-color:var(--ok)}
+.bin b{display:block;font-size:14px}
+.bin .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.chip{font-family:var(--mono);font-size:11px;border-radius:3px;padding:1px 5px;background:var(--bad-bg);color:var(--bad)}
+.bin.good .chip{background:var(--ok-bg);color:var(--ok)}
+.item{position:absolute;top:62px;width:150px;height:56px;border:2px solid var(--ink);border-radius:6px;background:#fff;font-size:12px;
+  padding:4px 6px;font-family:var(--mono);transition:left .9s ease,top .5s ease,opacity .4s,border-color .3s;line-height:1.35}
+.item.ok{border-color:var(--ok)} .item.bad{border-color:var(--bad)}
+.belt-ctrl{display:flex;gap:10px;margin:12px 0}
+.defense{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.defense div{border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:14px}
+.defense b{display:block;font-size:16px;margin-bottom:2px}
+
+/* ---------- 佔位框 ---------- */
+.two-col{display:grid;grid-template-columns:1fr 1.25fr;gap:32px;flex:1;min-height:0}
+.steps-list{font-size:19px;line-height:1.7;padding-left:24px;margin:0}
+.steps-list li{margin-bottom:6px}
+.placeholder{border:3px dashed var(--idle);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:var(--muted);text-align:center;gap:8px;background:repeating-linear-gradient(45deg,#fafbfc 0 14px,#f2f4f7 14px 28px);min-height:0}
+.placeholder .tag{background:var(--ink);color:#fff;border-radius:4px;padding:2px 10px;font-size:14px}
+.placeholder code{font-size:13px}
+.ph-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;min-height:0}
+.shot{margin:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:0}
+.shot img{max-width:100%;max-height:100%;min-height:0;object-fit:contain;border:1px solid var(--line);border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.shot .tag{background:var(--ink);color:#fff;border-radius:4px;padding:2px 10px;font-size:14px}
+.shot-stack{display:flex;flex-direction:column;gap:18px;min-height:0}
+.hl-wrap{position:relative;display:inline-block}
+.hl-wrap .dlg{display:block;height:300px;max-height:none}
+.hl{position:absolute;border:3px solid var(--bad);border-radius:4px}
+
+/* ---------- 3 SmartScreen 示意圖 ---------- */
+.ss-wrap{display:flex;flex-direction:column;gap:12px;min-height:0}
+.ss-win{position:relative;flex:1;background:#0b5cad;color:#fff;border-radius:6px;padding:40px 36px 24px;display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.6}
+.ss-win h3{margin:0;font-size:26px;font-weight:400}
+.ss-win p{margin:0}
+.ss-mock{position:absolute;top:10px;left:12px;background:var(--warn-bg);color:var(--warn);border-radius:4px;padding:1px 8px;font-size:13px}
+.ss-close{position:absolute;top:8px;right:14px;opacity:.8}
+.ss-link{text-decoration:underline;cursor:default}
+.ss-btns{margin-top:auto;display:flex;justify-content:flex-end;gap:10px}
+.ss-btn{border:2px solid #fff;padding:5px 22px;min-width:110px;text-align:center}
+.ss-hl{outline:3px solid #ffd33d;outline-offset:3px;border-radius:2px}
+.ss-win:not(.step2) .ss-2{display:none}
+.ss-win.step2 .ss-1{display:none}
+.ss-ctrl{display:flex;gap:10px;justify-content:center}
+.ss-ctrl .on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* ---------- 4 IP ---------- */
+.ipform{display:flex;flex-direction:column;gap:12px}
+.ipform label{font-size:15px;color:var(--muted)}
+.ip-row{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:20px}
+.ip-row input{font-family:var(--mono);font-size:20px;border:2px solid var(--line);border-radius:6px;padding:6px 10px}
+.ip-row input:focus{outline:none;border-color:var(--accent)}
+#ipC{width:80px}
+#ipList{width:100%;font-family:var(--mono);font-size:20px;border:2px solid var(--line);border-radius:6px;padding:8px 10px}
+#ipList:focus{outline:none;border-color:var(--accent)}
+.examples{display:flex;flex-wrap:wrap;gap:6px}
+.examples button{font-family:var(--mono);font-size:13px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;cursor:pointer}
+.ip-result{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;min-height:0}
+.ip-head{font-size:17px;font-weight:600;margin-bottom:8px}
+.ip-head.err{color:var(--bad)}
+.ip-errors{color:var(--bad);font-size:14px;margin:0 0 8px;padding-left:18px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:6px;overflow:auto;align-content:start;flex:1}
+.ipcard{font-family:var(--mono);font-size:13px;border:1px solid var(--ok);background:var(--ok-bg);border-radius:5px;padding:5px 6px;text-align:center}
+.ipcard b{font-size:15px}
+.ipcard.new{animation:pop .3s ease}
+.cards.rejected .ipcard{border-color:var(--idle);background:var(--soft);color:var(--muted);text-decoration:line-through}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.rules{font-size:14px;color:var(--muted);margin:0;padding-left:18px;line-height:1.6}
+
+/* ---------- 5 模式 ---------- */
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.mode{border:2px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;background:#fff;text-align:left;transition:all .2s}
+.mode b{display:block;font-size:20px;margin-bottom:4px}
+.mode span{font-size:14px;color:var(--muted)}
+.mode.on{border-color:var(--accent);background:var(--run-bg)}
+.mode-detail{margin-top:16px;border:1px solid var(--line);border-radius:10px;padding:16px 20px;flex:1;display:grid;grid-template-columns:1.3fr 1fr;gap:24px}
+.mode-detail h4{margin:0 0 8px;font-size:16px;color:var(--muted);font-weight:600}
+.cmd{font-family:var(--mono);background:#1e2530;color:#e6edf3;border-radius:6px;padding:8px 12px;font-size:15px;margin-bottom:6px;display:flex;gap:10px}
+.cmd i{color:#8b98a8;font-style:normal}
+.mode-detail ul{margin:0;padding-left:20px;font-size:15px;line-height:1.65}
+
+/* ---------- 8 流程 ---------- */
+.flow-ctrl{display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:15px;margin-bottom:16px}
+.flow-ctrl select{border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.flow{display:flex;align-items:stretch;gap:8px}
+.step{flex:1;border:2px solid var(--line);border-radius:10px;padding:12px 10px;text-align:center;background:#fff;transition:all .3s;position:relative;min-height:122px}
+.step .no{font-size:13px;color:var(--muted)}
+.step b{display:block;font-size:17px;margin:4px 0}
+.step small{font-size:12px;color:var(--muted);display:block}
+.step .st{margin-top:6px;font-size:13px;font-weight:600}
+.step.skip{border-style:dashed;opacity:.5;background:var(--soft)}
+.step.active{border-color:var(--run);background:var(--run-bg);box-shadow:0 0 0 4px rgba(31,111,235,.15)}
+.step.ok{border-color:var(--ok);background:var(--ok-bg)}
+.step.fail{border-color:var(--bad);background:var(--bad-bg)}
+.step.after{opacity:.35}
+.arrow{align-self:center;color:var(--idle);font-size:22px}
+.flow-msg{margin-top:18px;border-radius:8px;padding:12px 16px;font-size:17px;min-height:52px;background:var(--soft)}
+.flow-msg.ok{background:var(--ok-bg);color:var(--ok)}
+.flow-msg.fail{background:var(--bad-bg);color:var(--bad)}
+.flow-msg code{font-size:14px;color:var(--ink)}
+
+/* ---------- 9 結果檔 ---------- */
+.res{display:grid;grid-template-columns:1.25fr 1fr;gap:26px;flex:1;min-height:0}
+.tabs{display:flex;gap:6px;margin-bottom:8px}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:6px 6px 0 0;padding:5px 12px;cursor:pointer;font-size:14px}
+.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filewin{border:1px solid #3a4352;border-radius:8px;overflow:hidden}
+.filewin .bar{background:#3a4352;color:#dfe5ec;font-size:13px;padding:5px 10px;font-family:var(--mono)}
+.filewin pre{margin:0;background:#1e2530;color:#e6edf3;font-family:var(--mono);font-size:19px;line-height:1.9;padding:12px 16px;min-height:150px}
+.filewin .f{cursor:pointer;border-radius:3px;padding:0 2px}
+.filewin .f:hover,.filewin .f.on{background:#3c5a8a}
+.filewin .f[data-f=hostname]{color:#9ecbff}
+.filewin .f[data-f=mac]{color:#b6e3a1}
+.filewin .f[data-f=tz],.filewin .f[data-f=kb]{color:#ffd58a}
+.filewin .f[data-f=rc]{color:#ffa3a3}
+.caret{display:inline-block;width:10px;background:#e6edf3;animation:blink .6s infinite alternate}
+.explain{border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:16px;line-height:1.6;min-height:120px}
+.explain h4{margin:0 0 6px;font-family:var(--mono);font-size:18px}
+.res-notes{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+
+/* ---------- 10 翻牌 ---------- */
+.flips{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1;margin-top:6px}
+.flip{perspective:1200px;cursor:pointer;border:0;background:none;padding:0;text-align:left;font-size:inherit;color:inherit}
+.flip .inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;padding:22px;display:flex;flex-direction:column}
+.front{background:var(--ink);color:#fff;justify-content:center;align-items:center;text-align:center}
+.front .k{font-size:42px;font-weight:700;font-family:var(--mono)}
+.front .q{font-size:22px;margin-top:12px}
+.front .hint{position:absolute;bottom:16px;font-size:13px;opacity:.6}
+.back{background:#fff;border:2px solid var(--ink);transform:rotateY(180deg);font-size:16px;line-height:1.6}
+.back h3{margin:0 0 8px;font-size:21px}
+.back ul{margin:0;padding-left:20px}
+.back li{margin-bottom:6px}
+.todo{display:inline-block;background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn);border-radius:4px;font-size:12px;padding:0 6px;margin-left:4px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="chrome-top">
+    <span class="act-tag"><b id="actName"></b><span id="actAudience"></span></span>
+    <span id="pageNo"></span>
+  </div>
+
+  <!-- ============ 0 封面 ============ -->
+  <section class="slide cover" data-act="1">
+    <h1>一個 exe，一次測完一整批</h1>
+    <p class="sub">ALL228X 出廠測試工具 v5｜使用教學</p>
+    <div class="cover-devices" id="coverDevices"></div>
+    <p class="note">最多 10 台同時進行，跑完一台就補上下一台</p>
+  </section>
+
+  <!-- ============ 1 模擬器 ============ -->
+  <section class="slide" data-act="1">
+    <h1>20 次登入，變成填一次、按一次</h1>
+    <p class="sub">人只要做一次：填 IP 清單 → 解析並預覽 → 輸入帳密 → 按 Start</p>
+    <div class="race">
+      <div class="lane">
+        <h3>以前：手動 SSH 逐台操作</h3>
+        <div class="desc">每一台都要：登入 → 下指令 → 記錄結果</div>
+        <div class="grid20" id="gridL"></div>
+        <div class="status" id="statusL">尚未開始</div>
+        <div class="count"><span id="countL">0</span> <small>/ 20 台完成</small></div>
+      </div>
+      <div class="lane">
+        <h3>現在：工具平行處理<span class="finish-badge" id="badgeR">全部完成</span></h3>
+        <div class="desc">最多 10 條 SSH 通道同時跑，跑完一台補一台</div>
+        <div class="grid20" id="gridR"></div>
+        <div class="slots" id="slotsR"></div>
+        <div class="status" id="statusR">尚未開始</div>
+        <div class="count"><span id="countR">0</span> <small>/ 20 台完成</small></div>
+      </div>
+    </div>
+    <div class="race-ctrl">
+      <button class="btn" id="raceStart">開始</button>
+      <button class="btn ghost" id="raceReset">重設</button>
+      <span class="note">示意動畫：每台設定成相同工作量，不代表實際時間。</span>
+    </div>
+  </section>
+
+  <!-- ============ 2 防呆 ============ -->
+  <section class="slide" data-act="1">
+    <h1>不是目標設備，自動略過</h1>
+    <p class="sub">登入後先讀 MAC，開頭不是 <code>00:0F:C9</code> 就不測、記一筆 Log</p>
+    <div class="belt-wrap" id="belt">
+      <div class="track"></div>
+      <div class="gate" style="left:265px">SSH 連線<small>失敗會重試，最多 10 次</small><div class="light" id="g1"></div></div>
+      <div class="gate" style="left:625px">MAC 檢查<small>開頭是 00:0F:C9？</small><div class="light" id="g2"></div></div>
+      <div class="bin" style="left:240px"><b>連線失敗：放棄這台</b><span class="note">記在 Log</span><div class="chips" id="bin1"></div></div>
+      <div class="bin" style="left:600px"><b>不是目標設備：略過</b><span class="note">記在 Log，不寫結果檔</span><div class="chips" id="bin2"></div></div>
+      <div class="bin good" style="left:960px"><b>目標設備：開始測試</b><span class="note">跑完寫入結果檔</span><div class="chips" id="bin3"></div></div>
+    </div>
+    <div class="belt-ctrl">
+      <button class="btn" data-send="target">送入：目標設備</button>
+      <button class="btn ghost" data-send="other">送入：非目標設備</button>
+      <button class="btn ghost" data-send="down">送入：連不上的設備</button>
+      <button class="btn ghost" id="beltReset">重設</button>
+    </div>
+    <div class="defense">
+      <div><b>① IP 清單</b>只連你填的 IP，其他設備完全不碰</div>
+      <div><b>② 本機網卡檢查</b>本機網卡不在這個網段時，按 Start 會跳警告</div>
+      <div><b>③ MAC 檢查</b>登入後讀 MAC，開頭不符就略過</div>
+    </div>
+    <p class="callout" style="margin:10px 0 0">網段裡的 switch，MAC 開頭也是 00:0F:C9，MAC 檢查擋不掉它，所以 IP 清單一定要填對。</p>
+  </section>
+
+  <!-- ============ 3 下載（截圖待補） ============ -->
+  <section class="slide" data-act="2">
+    <h1>下載後點兩下就能用</h1>
+    <p class="sub">Windows 10／11（64 位元），不需要安裝 Python 或其他軟體</p>
+    <div class="two-col">
+      <ol class="steps-list">
+        <li>下載 <code>all228x_factory_test_tool_v5.exe</code></li>
+        <li>放在可以寫入的資料夾（例如桌面），結果檔會存在 exe 旁邊</li>
+        <li>點兩下開啟，啟動時要先解壓，約需 2～5 秒</li>
+        <li>跳出 SmartScreen：點「其他資訊」→「仍要執行」</li>
+      </ol>
+      <div class="ss-wrap">
+        <div class="ss-win" id="ssWin">
+          <span class="ss-mock">示意圖</span>
+          <div class="ss-close">✕</div>
+          <h3>Windows 已保護您的電腦</h3>
+          <p>Microsoft Defender SmartScreen 已防止某個無法辨識的應用程式啟動。執行此應用程式可能會讓您的電腦暴露在風險中。</p>
+          <p class="ss-1"><span class="ss-link ss-hl">其他資訊</span></p>
+          <p class="ss-2">應用程式：all228x_factory_test_tool_v5.exe<br>發行者：未知的發行者</p>
+          <div class="ss-btns"><span class="ss-btn ss-2 ss-hl">仍要執行</span><span class="ss-btn">不要執行</span></div>
+        </div>
+        <div class="ss-ctrl">
+          <button class="nav-btn" data-ss="1">① 點「其他資訊」</button>
+          <button class="nav-btn" data-ss="2">② 點「仍要執行」</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4 IP ============ -->
+  <section class="slide" data-act="2">
+    <h1>填 IP：可以跳號、可以範圍</h1>
+    <p class="sub">試著改改看下面的欄位，右邊會即時展開</p>
+    <div class="two-col">
+      <div class="ipform">
+        <label>Class C 網段（只填第三段）</label>
+        <div class="ip-row">192.168.<input id="ipC" value="100" autocomplete="off">.</div>
+        <label>待測 IP 清單（第四段，用逗號分隔）</label>
+        <input id="ipList" value="10, 50-53" autocomplete="off">
+        <div class="examples" id="ipExamples">
+          <button>10, 50-53</button>
+          <button>10, 50-53, 88, 120-125</button>
+          <button>10，20，30</button>
+          <button>53-50</button>
+          <button>0, 300</button>
+        </div>
+        <ul class="rules">
+          <li>號碼只能是 1～254；中文逗號也可以</li>
+          <li>重複的號碼會自動合併、由小到大排列</li>
+          <li><b>只要有一處錯，整份清單都不採用</b></li>
+          <li>在工具裡要按「解析並預覽」才會展開，同時檢查本機網卡在不在這個網段</li>
+        </ul>
+      </div>
+      <div class="ip-result">
+        <div class="ip-head" id="ipHead"></div>
+        <ul class="ip-errors" id="ipErrors"></ul>
+        <div class="cards" id="ipCards"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5 模式 ============ -->
+  <section class="slide" data-act="2">
+    <h1>選一種測試模式</h1>
+    <p class="sub">四選一，點卡片看看會跑什麼</p>
+    <div class="modes" id="modes">
+      <button class="mode" data-m="stress"><b>stress</b><span>CPU、記憶體壓力測試</span></button>
+      <button class="mode" data-m="allhicom"><b>allhicom</b><span>執行 allhicom</span></button>
+      <button class="mode" data-m="custom"><b>自訂指令</b><span>自己填一行指令</span></button>
+      <button class="mode" data-m="none"><b>不執行測試</b><span>只做設定變更</span></button>
+    </div>
+    <div class="mode-detail">
+      <div><h4>每台會依序執行</h4><div id="modeCmds"></div></div>
+      <div><h4>要注意</h4><ul id="modeNotes"></ul></div>
+    </div>
+  </section>
+
+  <!-- ============ 6 自訂指令確認（截圖待補） ============ -->
+  <section class="slide" data-act="2">
+    <h1>自訂指令會先讓你確認</h1>
+    <p class="sub">按 Start 後跳出確認視窗，按「否」就不會開始</p>
+    <div class="two-col">
+      <ol class="steps-list">
+        <li>確認視窗會顯示：完整指令、timeout、IP 數量</li>
+        <li>多道指令要寫在同一行，用 <code>&amp;&amp;</code> 或 <code>;</code> 串接</li>
+        <li>指令裡有 <code>sudo</code>：設備必須設定 sudo 免密碼，否則略過那台</li>
+        <li>確認無誤再按「是」</li>
+      </ol>
+      <div class="shot-stack">
+        <figure class="shot"><span class="tag">① 在主畫面選自訂指令，填指令、timeout</span><img src="screenshots/06-input.png" alt="自訂指令與 timeout 欄位"></figure>
+        <figure class="shot"><span class="tag">② 按 Start，跳出確認視窗</span>
+          <div class="hl-wrap"><img class="dlg" src="screenshots/06-dialog.png" alt="確認自訂指令視窗"><span class="hl" style="left:23%;top:23.6%;width:69%;height:34%"></span></div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7 時區鍵盤（截圖待補） ============ -->
+  <section class="slide" data-act="2">
+    <h1>時區、鍵盤勾選才會改</h1>
+    <p class="sub">沒勾就不會動到設備設定</p>
+    <div class="two-col">
+      <ol class="steps-list">
+        <li>勾「更改時區」或「更改鍵盤佈局」，再選要改成的值</li>
+        <li>「完成後重開機」<b>預設是勾起來的</b>，但只有勾了時區或鍵盤時才會重開</li>
+        <li>改之前會先做檢查，改完會讀回來驗證</li>
+        <li>任一步失敗：這台就停止，不跑測試、不寫結果檔</li>
+      </ol>
+      <div class="shot-stack">
+        <figure class="shot"><span class="tag">勾選前</span><img src="screenshots/07-settings-before.png" alt="設定變更：勾選前"></figure>
+        <figure class="shot"><span class="tag">勾選後</span><img src="screenshots/07-settings-after.png" alt="設定變更：勾選後"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8 流程 ============ -->
+  <section class="slide" data-act="2">
+    <h1>每台自動跑完這幾步</h1>
+    <p class="sub">灰色虛線的步驟代表沒勾選，會直接跳過</p>
+    <div class="flow-ctrl">
+      <label>測試模式
+        <select id="flMode">
+          <option value="stress">stress</option><option value="allhicom">allhicom</option>
+          <option value="custom">自訂指令</option><option value="none">不執行測試</option>
+        </select></label>
+      <label><input type="checkbox" id="flSet"> 有勾設定變更（時區／鍵盤）</label>
+      <label><input type="checkbox" id="flReboot" checked> 有勾完成後重開機</label>
+    </div>
+    <div class="flow" id="flow"></div>
+    <div class="flow-ctrl" style="margin-top:16px">
+      <button class="btn" id="flRun">正常跑一台</button>
+      <button class="btn ghost" id="flFail">模擬失敗</button>
+      <select id="flFailAt"></select>
+    </div>
+    <div class="flow-msg" id="flMsg">按「正常跑一台」或「模擬失敗」看看。</div>
+    <p class="note" style="margin-top:10px">stress／allhicom 的指令回傳錯誤碼時<b>不會停</b>，一樣會寫結果檔，錯誤只記在 Log。</p>
+  </section>
+
+  <!-- ============ 9 結果檔 ============ -->
+  <section class="slide" data-act="3">
+    <h1>結果檔：一行就是一台跑完的設備</h1>
+    <p class="sub">檔名是開始時間 <code>YY-MM-DD-HHMM.txt</code>，每跑完一台就馬上寫入</p>
+    <div class="res">
+      <div>
+        <div class="tabs" id="resTabs">
+          <button data-t="test">stress／allhicom</button>
+          <button data-t="set">有做設定變更</button>
+          <button data-t="custom">自訂指令</button>
+        </div>
+        <div class="filewin">
+          <div class="bar">26-10-19-1430.txt（範例資料）</div>
+          <pre id="resPre"></pre>
+        </div>
+        <p class="note">順序是跑完的先後，不是 IP 的順序。打字完成後，點任一欄位看說明。</p>
+      </div>
+      <div>
+        <div class="explain" id="resExplain"><span class="note">點左邊任一欄位看說明</span></div>
+        <div class="res-notes">
+          <div class="callout">只有跑完的設備才有一行。行數比 IP 數少，代表有設備被略過或失敗，請看 Log。</div>
+          <div class="callout">Log 只顯示在視窗上，不會存成檔案，關掉程式前先看完。</div>
+          <div class="callout info">存在 exe 所在的資料夾；那裡不能寫入時，改存到「文件」資料夾，Log 會註明。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 10 翻牌 ============ -->
+  <section class="slide" data-act="3">
+    <h1>三件最常搞錯的事</h1>
+    <p class="sub">先想想看，再點卡片翻面</p>
+    <div class="flips">
+      <button class="flip"><div class="inner">
+        <div class="face front"><div class="k">Stop</div><div class="q">按了就全部停下來？</div><div class="hint">點擊翻面</div></div>
+        <div class="face back"><h3>只取消還沒開始的設備</h3><ul>
+          <li>正在跑的設備會繼續跑完，不會被強制中斷</li>
+          <li>進度不會跑到最後一台，例如停在 12/20，這是正常的</li>
+          <li>按 Stop 後 Start 馬上可以按，但前一批還有設備在跑</li>
+        </ul></div>
+      </div></button>
+      <button class="flip"><div class="inner">
+        <div class="face front"><div class="k">timeout</div><div class="q">自訂指令的 timeout 是總執行時間的上限？</div><div class="hint">點擊翻面</div></div>
+        <div class="face back"><h3>不是總時間上限</h3><ul>
+          <li>是「多久沒有新輸出就中斷」</li>
+          <li>指令一直有輸出，就會一直跑下去</li>
+          <li>中斷時 Log 記錯誤，這台不寫結果檔</li>
+          <li>timeout 可以在畫面上修改（單位：分鐘）</li>
+        </ul></div>
+      </div></button>
+      <button class="flip"><div class="inner">
+        <div class="face front"><div class="k">sudo</div><div class="q">要輸入密碼時，工具會幫我輸入？</div><div class="hint">點擊翻面</div></div>
+        <div class="face back"><h3>不會，設備要設定免密碼</h3><ul>
+          <li>設備帳號要設定 sudo 免密碼（NOPASSWD）</li>
+          <li>沒設定的話，設定變更和含 sudo 的自訂指令都會略過該台</li>
+          <li>Log 會出現「sudo 需要密碼或權限不足」</li>
+        </ul></div>
+      </div></button>
+    </div>
+  </section>
+
+  <div class="chrome-bottom">
+    <button class="nav-btn" id="prev">← 上一頁</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn" id="next">下一頁 →</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const ACTS = { 1: ["第 1 幕", ""], 2: ["第 2 幕", ""], 3: ["第 3 幕", ""] };
+
+  const stage = $("#stage");
+  const slides = $$(".slide");
+  const hooks = {};
+  let cur = -1;
+
+  // ---------- 舞台縮放 ----------
+  function fit() {
+    const s = Math.min(innerWidth / 1280, innerHeight / 720);
+    stage.style.transform = `translate(-50%,-50%) scale(${s})`;
+  }
+  addEventListener("resize", fit);
+  fit();
+
+  // ---------- 換頁 ----------
+  const dots = $("#dots");
+  slides.forEach((sl, i) => {
+    if (i > 0 && sl.dataset.act !== slides[i - 1].dataset.act) dots.append(Object.assign(document.createElement("span"), { className: "gap" }));
+    const b = document.createElement("button");
+    b.title = `第 ${i} 頁`;
+    b.onclick = () => go(i);
+    dots.append(b);
+  });
+  const dotBtns = $$("button", dots);
+
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    if (i === cur) return;
+    if (cur >= 0) { slides[cur].classList.remove("active"); hooks[cur]?.leave?.(); }
+    cur = i;
+    const sl = slides[i];
+    sl.classList.add("active");
+    const [act, aud] = ACTS[sl.dataset.act];
+    $("#actName").textContent = act;
+    $("#actAudience").textContent = aud;
+    $("#pageNo").textContent = `${i} / ${slides.length - 1}`;
+    dotBtns.forEach((d, k) => d.classList.toggle("on", k === i));
+    $("#prev").disabled = i === 0;
+    $("#next").disabled = i === slides.length - 1;
+    history.replaceState(null, "", `#${i}`);
+    hooks[i]?.enter?.();
+  }
+  $("#prev").onclick = () => go(cur - 1);
+  $("#next").onclick = () => go(cur + 1);
+  addEventListener("keydown", e => {
+    if (e.target.matches("input, select")) return;
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+    else if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    else if (e.key === "Home") go(0);
+    else if (e.key === "End") go(slides.length - 1);
+    else if (e.key === "f" || e.key === "F") {
+      document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+    }
+  });
+  addEventListener("hashchange", () => go(parseInt(location.hash.slice(1), 10) || 0));
+
+  // ---------- 0 封面：兩波亮起（最多 10 台同時） ----------
+  {
+    const box = $("#coverDevices");
+    for (let i = 0; i < 20; i++) box.insertAdjacentHTML("beforeend", '<div class="dev"><div class="led"></div></div>');
+    const devs = $$(".dev", box);
+    let timers = [];
+    const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+    hooks[0] = {
+      enter() {
+        devs.forEach(d => (d.className = "dev"));
+        devs.slice(0, 10).forEach((d, k) => at(300 + k * 40, () => d.classList.add("run")));
+        devs.slice(0, 10).forEach((d, k) => at(1800 + k * 120, () => {
+          d.className = "dev done";
+          devs[k + 10].classList.add("run");
+        }));
+        devs.slice(10).forEach((d, k) => at(3400 + k * 120, () => (d.className = "dev done")));
+      },
+      leave() { timers.forEach(clearTimeout); timers = []; },
+    };
+  }
+
+  // ---------- 1 模擬器：左邊逐台，右邊 10 條通道 ----------
+  {
+    const N = 20, LANES = 10, WORK = 12, TICK = 90;
+    const mk = id => {
+      const g = $(id);
+      for (let i = 1; i <= N; i++) g.insertAdjacentHTML("beforeend", `<div class="cell"><div class="fill"></div><span>#${i}</span></div>`);
+      return $$(".cell", g);
+    };
+    const cellsL = mk("#gridL"), cellsR = mk("#gridR");
+    const slotsBox = $("#slotsR");
+    for (let i = 0; i < LANES; i++) slotsBox.insertAdjacentHTML("beforeend", '<div class="slot"></div>');
+    const slots = $$(".slot", slotsBox);
+    const PHASES = ["登入", "下指令", "記錄結果"];
+    let L, R, timer = null;
+
+    function reset() {
+      stop();
+      L = { prog: Array(N).fill(0), cur: 0 };
+      R = { prog: Array(N).fill(0), next: 0, lanes: Array(LANES).fill(-1), done: 0 };
+      render();
+      $("#statusL").textContent = $("#statusR").textContent = "尚未開始";
+      $("#badgeR").classList.remove("show");
+      $("#raceStart").disabled = false;
+    }
+    function stop() { clearInterval(timer); timer = null; }
+
+    function paint(cells, prog) {
+      cells.forEach((c, i) => {
+        const p = prog[i];
+        c.classList.toggle("done", p >= WORK);
+        c.classList.toggle("run", p > 0 && p < WORK);
+        c.firstChild.style.width = `${(p / WORK) * 100}%`;
+      });
+    }
+    function render() {
+      paint(cellsL, L.prog);
+      paint(cellsR, R.prog);
+      $("#countL").textContent = L.prog.filter(p => p >= WORK).length;
+      $("#countR").textContent = R.done;
+      R.lanes.forEach((d, k) => {
+        slots[k].classList.toggle("busy", d >= 0);
+        slots[k].textContent = d >= 0 ? `#${d + 1}` : "";
+      });
+    }
+    function tick() {
+      // 左：一次只處理一台
+      if (L.cur < N) {
+        const p = ++L.prog[L.cur];
+        $("#statusL").textContent = `第 ${L.cur + 1} 台：${PHASES[Math.min(2, Math.floor((p - 1) / (WORK / 3)))]}`;
+        if (p >= WORK) L.cur++;
+        if (L.cur === N) $("#statusL").textContent = "全部完成";
+      }
+      // 右：空出來的通道立刻補下一台
+      R.lanes = R.lanes.map(d => (d < 0 && R.next < N ? R.next++ : d));
+      R.lanes = R.lanes.map(d => {
+        if (d < 0) return d;
+        if (++R.prog[d] >= WORK) { R.done++; return -1; }
+        return d;
+      });
+      R.lanes = R.lanes.map(d => (d < 0 && R.next < N ? R.next++ : d));
+      const busy = R.lanes.filter(d => d >= 0).length;
+      if (R.done === N) {
+        $("#statusR").textContent = "全部完成";
+        $("#badgeR").classList.add("show");
+      } else {
+        $("#statusR").textContent = `通道使用中 ${busy}/${LANES}，排隊中 ${N - R.next} 台`;
+      }
+      render();
+      if (L.cur === N && R.done === N) stop();
+    }
+    $("#raceStart").onclick = () => {
+      if (timer) return;
+      $("#raceStart").disabled = true;
+      timer = setInterval(tick, TICK);
+    };
+    $("#raceReset").onclick = reset;
+    hooks[1] = { enter: reset, leave: stop };
+  }
+
+  // ---------- 2 輸送帶：連線門 → MAC 門 ----------
+  {
+    const X0 = -170, G1 = 275, G2 = 635, END = 990;
+    const belt = $("#belt");
+    const btns = $$("[data-send]");
+    let gen = 0, busy = false, seq = 0;
+    const SAMPLES = {
+      target: () => ({ mac: "00:0f:c9:…", down: false, ok: true }),
+      other: () => ({ mac: "b8:27:eb:…", down: false, ok: false }),
+      down: () => ({ mac: "", down: true, ok: false }),
+    };
+    const lights = { g1: $("#g1"), g2: $("#g2") };
+    const setLight = (g, s) => (lights[g].className = "light" + (s ? " " + s : ""));
+
+    function reset() {
+      gen++;
+      busy = false;
+      btns.forEach(b => (b.disabled = false));
+      $$(".item", belt).forEach(n => n.remove());
+      ["#bin1", "#bin2", "#bin3"].forEach(s => ($(s).innerHTML = ""));
+      setLight("g1"); setLight("g2");
+      seq = 0;
+    }
+    async function send(kind) {
+      if (busy) return;
+      busy = true;
+      btns.forEach(b => (b.disabled = true));
+      const my = gen;
+      const alive = () => my === gen;
+      const s = SAMPLES[kind]();
+      const ip = `192.168.100.${[10, 50, 51, 52, 53][seq++ % 5]}`;
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `${ip}<br><span class="mac">MAC：？</span>`;
+      el.style.left = X0 + "px";
+      belt.append(el);
+      const move = async (x, y) => { el.style.left = x + "px"; if (y != null) el.style.top = y + "px"; await sleep(950); };
+      const drop = async (bin, cls) => {
+        el.classList.add(cls);
+        el.style.top = "200px";
+        el.style.opacity = "0";
+        await sleep(550);
+        if (!alive()) return;
+        el.remove();
+        $(bin).insertAdjacentHTML("beforeend", `<span class="chip">${ip.split(".").pop()}</span>`);
+      };
+
+      await sleep(30);
+      await move(G1 + 10);
+      if (!alive()) return;
+      setLight("g1", "wait");
+      await sleep(700);
+      if (!alive()) return;
+      if (s.down) {
+        setLight("g1", "bad");
+        await sleep(400);
+        await drop("#bin1", "bad");
+      } else {
+        setLight("g1", "ok");
+        await sleep(300);
+        await move(G2 + 10);
+        if (!alive()) return;
+        setLight("g2", "wait");
+        $(".mac", el).textContent = `MAC：${s.mac}`;
+        await sleep(800);
+        if (!alive()) return;
+        setLight("g2", s.ok ? "ok" : "bad");
+        await sleep(400);
+        if (s.ok) {
+          el.classList.add("ok");
+          await move(END + 30);
+          if (!alive()) return;
+          await drop("#bin3", "ok");
+        } else {
+          await drop("#bin2", "bad");
+        }
+      }
+      if (!alive()) return;
+      setLight("g1"); setLight("g2");
+      busy = false;
+      btns.forEach(b => (b.disabled = false));
+    }
+    btns.forEach(b => (b.onclick = () => send(b.dataset.send)));
+    $("#beltReset").onclick = reset;
+    hooks[2] = { enter: reset, leave: reset };
+  }
+
+  // ---------- 3 SmartScreen 示意圖：兩個畫面輪流 ----------
+  {
+    const win = $("#ssWin"), btns = $$("[data-ss]");
+    let timer;
+    const show = n => {
+      win.classList.toggle("step2", n === 2);
+      btns.forEach(b => b.classList.toggle("on", +b.dataset.ss === n));
+    };
+    const stop = () => clearInterval(timer);
+    const start = () => { stop(); show(1); timer = setInterval(() => show(win.classList.contains("step2") ? 1 : 2), 3000); };
+    btns.forEach(b => b.onclick = () => { stop(); show(+b.dataset.ss); });
+    hooks[3] = { enter: start, leave: stop };
+  }
+
+  // ---------- 4 IP 清單：對應 parse_ip_list() ----------
+  {
+    const isdigit = s => /^[0-9]+$/.test(s);
+    function parseIpList(classC, listText) {
+      const errors = [];
+      classC = classC.trim();
+      if (!isdigit(classC) || !(+classC >= 0 && +classC <= 255)) {
+        errors.push(`Class C 網段格式錯誤：${classC}（需為 0-255 的數字）`);
+        return [[], errors];
+      }
+      const text = listText.replaceAll("，", ",");
+      const parts = text.split(",").map(p => p.trim()).filter(Boolean);
+      if (!parts.length) {
+        errors.push("IP 清單是空的，請至少填一個");
+        return [[], errors];
+      }
+      const nums = new Set();
+      for (const p of parts) {
+        if (p.includes("-")) {
+          const seg = p.split("-").map(s => s.trim());
+          if (seg.length !== 2 || !seg.every(isdigit)) { errors.push(`範圍格式錯誤：${p}`); continue; }
+          const [a, b] = seg.map(Number);
+          if (a > b) { errors.push(`範圍寫反（起點大於終點）：${p}`); continue; }
+          if (a < 1 || b > 254) { errors.push(`超出可用範圍 1-254：${p}`); continue; }
+          for (let n = a; n <= b; n++) nums.add(n);
+        } else {
+          if (!isdigit(p)) { errors.push(`格式錯誤：${p}`); continue; }
+          const n = Number(p);
+          if (n < 1 || n > 254) { errors.push(`超出可用範圍 1-254：${p}`); continue; }
+          nums.add(n);
+        }
+      }
+      return [[...nums].sort((a, b) => a - b).map(n => `192.168.${classC}.${n}`), errors];
+    }
+
+    const inC = $("#ipC"), inL = $("#ipList"), cards = $("#ipCards");
+    let shown = new Set();
+    function update() {
+      const [ips, errors] = parseIpList(inC.value, inL.value);
+      const head = $("#ipHead");
+      $("#ipErrors").innerHTML = errors.map(e => `<li>${e.replace(/</g, "&lt;")}</li>`).join("");
+      if (errors.length) {
+        head.className = "ip-head err";
+        head.textContent = "解析發生錯誤：整份清單不採用，按 Start 會被擋下";
+      } else {
+        head.className = "ip-head";
+        head.textContent = `已解析出 ${ips.length} 個 IP`;
+      }
+      cards.classList.toggle("rejected", errors.length > 0);
+      const next = new Set(ips);
+      cards.innerHTML = ips.map(ip => {
+        const i = ip.lastIndexOf(".");
+        return `<div class="ipcard${shown.has(ip) ? "" : " new"}">${ip.slice(0, i + 1)}<b>${ip.slice(i + 1)}</b></div>`;
+      }).join("");
+      shown = next;
+    }
+    inC.oninput = inL.oninput = update;
+    $$("#ipExamples button").forEach(b => (b.onclick = () => { inL.value = b.textContent; update(); }));
+    hooks[4] = { enter() { shown = new Set(); update(); } };
+  }
+
+  // ---------- 5 測試模式 ----------
+  {
+    const cmd = (n, c) => `<div class="cmd"><i>${n}</i><span>${c}</span></div>`;
+    const MODES = {
+      stress: {
+        cmds: cmd(1, "stress --cpu 6 --timeout 900s") + cmd(2, "stress --vm 15 --vm-bytes 256M --timeout 900s"),
+        notes: ["兩道指令依序執行，第 1 道跑完才跑第 2 道", "指令回傳錯誤碼時不會停，錯誤記在 Log", "跑完寫一行到結果檔"],
+      },
+      allhicom: {
+        cmds: cmd(1, "allhicom"),
+        notes: ["畫面上的選項寫「sudo allhicom」，實際執行的是 allhicom", "指令回傳錯誤碼時不會停，錯誤記在 Log", "跑完寫一行到結果檔"],
+      },
+      custom: {
+        cmds: cmd(1, "（你在「指令」欄填的那一行）") + '<p class="note">多道指令寫在同一行，用 &amp;&amp; 或 ; 串接</p>',
+        notes: ["按 Start 後先跳確認視窗", "指令有 sudo：設備必須設定免密碼，否則略過那台", "Log 記 exit code 和 stdout 最後 20 行，失敗時附 stderr", "結果檔多一欄 rc=（exit code）"],
+      },
+      none: {
+        cmds: '<p style="font-size:17px;margin:0">不跑任何測試指令，只做「設定變更」（時區／鍵盤）</p>',
+        notes: ["一定要勾至少一項設定變更，否則按 Start 會被擋下", "設定成功才寫一行到結果檔"],
+      },
+    };
+    const btns = $$("#modes .mode");
+    function pick(m) {
+      btns.forEach(b => b.classList.toggle("on", b.dataset.m === m));
+      $("#modeCmds").innerHTML = MODES[m].cmds;
+      $("#modeNotes").innerHTML = MODES[m].notes.map(n => `<li>${n}</li>`).join("");
+    }
+    btns.forEach(b => (b.onclick = () => pick(b.dataset.m)));
+    hooks[5] = { enter: () => pick("stress") };
+  }
+
+  // ---------- 8 每台流程 ----------
+  {
+    const STEPS = [
+      { k: "ssh", t: "SSH 連線", s: "失敗會重試，最多 10 次" },
+      { k: "mac", t: "讀 MAC 防呆", s: "開頭要是 00:0F:C9" },
+      { k: "set", t: "設定變更", s: "有勾才做" },
+      { k: "test", t: "測試模式", s: "" },
+      { k: "write", t: "寫結果檔", s: "寫入一行" },
+      { k: "reboot", t: "重開機", s: "有勾設定變更＋重開機才做" },
+    ];
+    const FAILS = {
+      ssh: ["連線失敗", "SSH 連線失敗，放棄此設備"],
+      mac: ["MAC 不符", "MAC 不符合 00:0f:c9 開頭，略過。"],
+      set: ["設定變更失敗", "sudo 需要密碼或權限不足，無法變更設定，略過此設備"],
+      test: ["自訂指令的 sudo 不是免密碼", "自訂指令含 sudo，但 sudo 需要密碼或權限不足，略過此設備"],
+    };
+    const flow = $("#flow");
+    flow.innerHTML = STEPS.map((s, i) =>
+      (i ? '<div class="arrow">→</div>' : "") +
+      `<div class="step" data-k="${s.k}"><div class="no">步驟 ${i + 1}</div><b>${s.t}</b><small>${s.s}</small><div class="st"></div></div>`
+    ).join("");
+    const stepEls = $$(".step", flow);
+    const mode = $("#flMode"), setChk = $("#flSet"), rbChk = $("#flReboot"), failAt = $("#flFailAt"), msg = $("#flMsg");
+    let gen = 0;
+
+    function plan() {
+      const m = mode.value, set = setChk.checked;
+      return {
+        ssh: true, mac: true, set, write: true,
+        test: m !== "none",
+        reboot: set && rbChk.checked,
+      };
+    }
+    const TEST_LABEL = { stress: "stress 兩道指令", allhicom: "allhicom", custom: "自訂指令", none: "不執行測試" };
+
+    function reset() {
+      gen++;
+      const p = plan();
+      stepEls.forEach(el => {
+        const k = el.dataset.k;
+        el.className = "step" + (p[k] ? "" : " skip");
+        $(".st", el).textContent = p[k] ? "" : "略過";
+      });
+      $("small", stepEls[3]).textContent = TEST_LABEL[mode.value];
+      // 只列出目前設定下會發生的失敗點
+      const opts = ["ssh", "mac"];
+      if (p.set) opts.push("set");
+      if (mode.value === "custom") opts.push("test");
+      const prev = failAt.value;
+      failAt.innerHTML = opts.map(k => `<option value="${k}">失敗在：${FAILS[k][0]}</option>`).join("");
+      if (opts.includes(prev)) failAt.value = prev;
+      msg.className = "flow-msg";
+      if (mode.value === "none" && !p.set) {
+        msg.textContent = "「不執行測試」又沒勾設定變更：按 Start 時工具就會擋下，沒有事情可做。";
+        msg.classList.add("fail");
+      } else if (rbChk.checked && !p.set) {
+        msg.textContent = "重開機有勾，但沒勾設定變更，所以不會重開。";
+      } else {
+        msg.textContent = "按「正常跑一台」或「模擬失敗」看看。";
+      }
+      $("#flRun").disabled = $("#flFail").disabled = mode.value === "none" && !p.set;
+    }
+
+    async function run(failKey) {
+      reset();
+      if ($("#flRun").disabled) return;
+      const my = gen, p = plan();
+      $("#flRun").disabled = $("#flFail").disabled = true;
+      msg.textContent = "執行中…";
+      let stopped = false;
+      for (const el of stepEls) {
+        const k = el.dataset.k;
+        if (stopped) { if (p[k]) el.classList.add("after"); continue; }
+        if (!p[k]) continue;
+        el.classList.add("active");
+        $(".st", el).textContent = "進行中";
+        await sleep(750);
+        if (my !== gen) return;
+        el.classList.remove("active");
+        if (k === failKey) {
+          el.classList.add("fail");
+          $(".st", el).textContent = "停在這裡";
+          stopped = true;
+        } else {
+          el.classList.add("ok");
+          $(".st", el).textContent = "完成";
+        }
+      }
+      if (failKey) {
+        msg.className = "flow-msg fail";
+        msg.innerHTML = `這台停在「${FAILS[failKey][0]}」：後面的步驟都不做，<b>不寫結果檔</b>。Log 會寫：<code>${FAILS[failKey][1]}</code>`;
+      } else {
+        msg.className = "flow-msg ok";
+        msg.textContent = p.reboot ? "這台跑完：結果檔寫入一行，並送出重開機。" : "這台跑完：結果檔寫入一行。";
+      }
+      $("#flRun").disabled = $("#flFail").disabled = false;
+    }
+    [mode, setChk, rbChk].forEach(c => (c.onchange = reset));
+    $("#flRun").onclick = () => run(null);
+    $("#flFail").onclick = () => run(failAt.value);
+    hooks[8] = {
+      enter() { mode.value = "stress"; setChk.checked = false; rbChk.checked = true; reset(); },
+      leave() { gen++; },
+    };
+  }
+
+  // ---------- 9 結果檔：逐行打字 ----------
+  {
+    // 範例資料：hostname 與 MAC 皆為示意
+    const row = (h, m, extra = []) => [
+      [h, "hostname"], [",", null], [m, "mac"],
+      ...extra.flatMap(([t, f]) => [[",", null], [t, f]]),
+    ];
+    const FILES = {
+      test: [
+        row("ALL228X-02", "00:0f:c9:00:00:02"),
+        row("ALL228X-01", "00:0f:c9:00:00:01"),
+        row("ALL228X-05", "00:0f:c9:00:00:05"),
+      ],
+      set: [
+        row("ALL228X-01", "00:0f:c9:00:00:01", [["tz=Europe/Berlin", "tz"], ["kb=de", "kb"]]),
+        row("ALL228X-03", "00:0f:c9:00:00:03", [["tz=Europe/Berlin", "tz"], ["kb=de", "kb"]]),
+      ],
+      custom: [
+        row("ALL228X-01", "00:0f:c9:00:00:01", [["rc=0", "rc"]]),
+        row("ALL228X-04", "00:0f:c9:00:00:04", [["rc=1", "rc"]]),
+        row("ALL228X-02", "00:0f:c9:00:00:02", [["rc=0", "rc"]]),
+      ],
+    };
+    const INFO = {
+      hostname: ["hostname", "設備上 <code>hostname</code> 指令的結果；讀不到時改寫 IP。"],
+      mac: ["mac", "通過防呆的那個 MAC（00:0f:c9 開頭，小寫）。<br>stress／allhicom 有這一行只代表<b>跑完</b>，不等於測試通過。"],
+      tz: ["tz=", "有勾「更改時區」，而且改完讀回驗證通過，才會出現。"],
+      kb: ["kb=", "有勾「更改鍵盤佈局」，而且改完讀回驗證通過，才會出現。"],
+      rc: ["rc=", "自訂指令的 exit code，成功或失敗都會寫。<br>0 通常代表成功，其他數字請對照 Log 裡的 stdout／stderr。"],
+    };
+    const pre = $("#resPre"), explain = $("#resExplain");
+    let timer = null;
+
+    function type(key) {
+      clearInterval(timer);
+      $$("#resTabs button").forEach(b => b.classList.toggle("on", b.dataset.t === key));
+      explain.innerHTML = '<span class="note">點左邊任一欄位看說明</span>';
+      pre.innerHTML = "";
+      const segs = FILES[key].flatMap((r, i) => (i ? [["\n", null], ...r] : r));
+      const caret = Object.assign(document.createElement("span"), { className: "caret", textContent: " " });
+      pre.append(caret);
+      let si = 0, ci = 0, span = null;
+      timer = setInterval(() => {
+        if (si >= segs.length) { clearInterval(timer); caret.remove(); return; }
+        const [text, field] = segs[si];
+        if (!span) {
+          span = document.createElement("span");
+          if (field) { span.className = "f"; span.dataset.f = field; }
+          pre.insertBefore(span, caret);
+        }
+        span.textContent += text[ci++];
+        if (ci >= text.length) { si++; ci = 0; span = null; }
+      }, 28);
+    }
+    pre.onclick = e => {
+      const f = e.target.closest(".f");
+      if (!f) return;
+      $$(".f", pre).forEach(n => n.classList.toggle("on", n.dataset.f === f.dataset.f));
+      const [t, d] = INFO[f.dataset.f];
+      explain.innerHTML = `<h4>${t}</h4>${d}`;
+    };
+    $$("#resTabs button").forEach(b => (b.onclick = () => type(b.dataset.t)));
+    hooks[9] = { enter: () => type("test"), leave: () => clearInterval(timer) };
+  }
+
+  // ---------- 10 翻牌 ----------
+  {
+    const flips = $$(".flip");
+    flips.forEach(f => (f.onclick = () => f.classList.toggle("on")));
+    hooks[10] = { enter: () => flips.forEach(f => f.classList.remove("on")) };
+  }
+
+  go(parseInt(location.hash.slice(1), 10) || 0);
+})();
+</script>
+</body>
+</html>
