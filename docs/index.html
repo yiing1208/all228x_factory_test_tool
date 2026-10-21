@@ -230,6 +230,64 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
 .back li{margin-bottom:6px}
 .todo{display:inline-block;background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn);border-radius:4px;font-size:12px;padding:0 6px;margin-left:4px}
 
+.tkbox{background:#fff;border:1px solid #7a7a7a;font-family:var(--mono);font-size:11px;line-height:1.4;padding:2px 4px;white-space:pre-wrap;word-break:break-all;overflow:auto}
+.tkbox .omit{color:#888}
+.tk-g{color:#888}.tk-ok{color:#008000}.tk-bad{color:#d00000}
+.wcard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:15px;line-height:1.55}
+.wcard.big{font-size:17px;line-height:1.7;padding:14px 18px}
+.wcard.big h4{font-size:14px;margin-top:4px}
+.wcard h4{margin:0 0 2px;font-size:13px;color:var(--muted);font-weight:600}
+.wcard p{margin:0 0 6px}
+.wcard ul{margin:0;padding-left:20px}
+
+/* 可操作的工具畫面片段（真的 input／button，外觀照 tkinter） */
+.tkr-wrap{display:flex;flex-direction:column;gap:8px;min-height:0}
+.tkr-try{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;color:var(--muted)}
+.tkr-try button{font-family:var(--mono);font-size:12.5px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;cursor:pointer;color:var(--ink)}
+.tkr-try label{display:inline-flex;align-items:center;gap:4px;margin-left:6px;color:var(--ink)}
+.tkr{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;background:#f0f0f0;color:#000;border:1px solid #8c96a3;border-radius:6px;overflow:hidden;
+  font-family:"Segoe UI","Microsoft JhengHei",var(--font);font-size:13px;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.tkr .tt{display:flex;justify-content:space-between;background:#fff;border-bottom:1px solid #d9d9d9;padding:5px 10px}
+.tkr .mock{background:var(--warn-bg);color:var(--warn);border-radius:3px;padding:0 6px;font-size:11px}
+.tkr fieldset{margin:4px 8px;padding:3px 8px 6px;border:1px solid #c6c6c6;border-radius:3px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.tkr fieldset.grow{flex:1;min-height:0}
+.tkr label{display:inline-flex;align-items:center;gap:3px;cursor:pointer}
+.tkr .row{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.tkr input[type=text],.tkr textarea{font-family:var(--mono);font-size:12.5px;border:1px solid #7a7a7a;background:#fff;padding:2px 4px;color:#000}
+.tkr input[type=text]:focus,.tkr textarea:focus{outline:none;border-color:#0078d7}
+.tkr input.hl{box-shadow:0 0 0 3px var(--bad)}
+#cuCmd{width:300px} #cuTo{width:44px}
+.tkr textarea{flex:1;min-height:0;width:100%;resize:none;line-height:1.4;font-size:12px}
+.tkr button{font-family:inherit;font-size:13px;border:1px solid #adadad;background:#e1e1e1;padding:2px 14px;cursor:pointer;color:#000}
+.tkr button:hover:not(:disabled){border-color:#0078d7;background:#e5f1fb}
+.tkr button:disabled{color:#a3a3a3;border-color:#ccc;cursor:default}
+.tkr .ctrl{display:flex;align-items:center;gap:8px;margin:2px 12px}
+.tkr .dlg{position:absolute;inset:0;background:rgba(0,0,0,.2);display:none;align-items:center;justify-content:center}
+.tkr .dlg.show{display:flex;animation:fadeIn .2s ease}
+.tkr .dlg .box{background:#fff;border:1px solid #888;box-shadow:0 10px 30px rgba(0,0,0,.3);min-width:300px;max-width:90%}
+.tkr .dlg .bt{padding:5px 10px;border-bottom:1px solid #e5e5e5}
+.tkr .dlg .bd{display:flex;gap:12px;padding:14px 16px;white-space:pre-wrap;word-break:break-all}
+.tkr .dlg .ic{font-size:26px;line-height:1}
+.tkr .dlg .bb{background:#f0f0f0;padding:8px 12px;display:flex;justify-content:flex-end;gap:8px}
+.tkr .dlg .bb button{min-width:72px}
+.tkr .dlg .bb button:first-child{border-color:#0078d7}
+.tkr .nic-g{color:gray}.tkr .nic-ok{color:green}.tkr .nic-bad{color:red}
+#tkIpC{width:56px} #tkIpList{width:100%}
+.tkr-res{border-radius:8px;padding:8px 12px;font-size:15px;line-height:1.5;background:var(--soft);min-height:44px}
+.tkr-res.ok{background:var(--ok-bg);color:var(--ok)}
+.tkr-res.bad{background:var(--bad-bg);color:var(--bad)}
+.tkr-res.warn{background:var(--warn-bg);color:var(--warn)}
+
+.logv{display:grid;grid-template-columns:1.45fr 1fr;gap:22px;flex:1;min-height:0}
+.logv-l{display:flex;flex-direction:column;gap:8px;min-height:0}
+.ipchips{display:flex;gap:6px;flex-wrap:wrap}
+.ipchips button{font-family:var(--mono);font-size:13px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;cursor:pointer}
+.ipchips button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.biglog{flex:1;min-height:0;font-size:13px;line-height:1.55;padding:6px 8px}
+.biglog .ln.dim{opacity:.18}
+.biglog .ln.mark{background:#fff6cc}
+.logv-r{display:flex;flex-direction:column;gap:10px;min-height:0}
+
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
 }
@@ -243,15 +301,15 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
   </div>
 
   <!-- ============ 0 封面 ============ -->
-  <section class="slide cover" data-act="1">
+  <section id="s-cover" class="slide cover" data-act="1">
     <h1>一個 exe，一次測完一整批</h1>
-    <p class="sub">ALL228X 出廠測試工具 v5｜使用教學</p>
+    <p class="sub">ALL228X 出廠測試工具 v5｜使用教學（v2 草稿）</p>
     <div class="cover-devices" id="coverDevices"></div>
     <p class="note">最多 10 台同時進行，跑完一台就補上下一台</p>
   </section>
 
   <!-- ============ 1 模擬器 ============ -->
-  <section class="slide" data-act="1">
+  <section id="s-race" class="slide" data-act="1">
     <h1>20 次登入，變成填一次、按一次</h1>
     <p class="sub">人只要做一次：填 IP 清單 → 解析並預覽 → 輸入帳密 → 按 Start</p>
     <div class="race">
@@ -279,7 +337,7 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
   </section>
 
   <!-- ============ 2 防呆 ============ -->
-  <section class="slide" data-act="1">
+  <section id="s-belt" class="slide" data-act="1">
     <h1>不是目標設備，自動略過</h1>
     <p class="sub">登入後先讀 MAC，開頭不是 <code>00:0F:C9</code> 就不測、記一筆 Log</p>
     <div class="belt-wrap" id="belt">
@@ -305,7 +363,7 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
   </section>
 
   <!-- ============ 3 下載（截圖待補） ============ -->
-  <section class="slide" data-act="2">
+  <section id="s-dl" class="slide" data-act="2">
     <h1>下載後點兩下就能用</h1>
     <p class="sub">Windows 10／11（64 位元），不需要安裝 Python 或其他軟體</p>
     <div class="two-col">
@@ -334,15 +392,12 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
   </section>
 
   <!-- ============ 4 IP ============ -->
-  <section class="slide" data-act="2">
+  <section id="s-ip" class="slide" data-act="2">
     <h1>填 IP：可以跳號、可以範圍</h1>
-    <p class="sub">試著改改看下面的欄位，右邊會即時展開</p>
+    <p class="sub">在右邊的畫面填 IP，按「解析並預覽」看結果</p>
     <div class="two-col">
       <div class="ipform">
-        <label>Class C 網段（只填第三段）</label>
-        <div class="ip-row">192.168.<input id="ipC" value="100" autocomplete="off">.</div>
-        <label>待測 IP 清單（第四段，用逗號分隔）</label>
-        <input id="ipList" value="10, 50-53" autocomplete="off">
+        <label>點一下，填進右邊的 IP 清單</label>
         <div class="examples" id="ipExamples">
           <button>10, 50-53</button>
           <button>10, 50-53, 88, 120-125</button>
@@ -354,35 +409,61 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
           <li>號碼只能是 1～254；中文逗號也可以</li>
           <li>重複的號碼會自動合併、由小到大排列</li>
           <li><b>只要有一處錯，整份清單都不採用</b></li>
-          <li>在工具裡要按「解析並預覽」才會展開，同時檢查本機網卡在不在這個網段</li>
+          <li>按「解析並預覽」才會展開，同時檢查本機網卡在不在這個網段</li>
+          <li><b>改了清單要再按一次「解析並預覽」</b>，否則 Start 用的是上一次的清單</li>
         </ul>
       </div>
-      <div class="ip-result">
-        <div class="ip-head" id="ipHead"></div>
-        <ul class="ip-errors" id="ipErrors"></ul>
-        <div class="cards" id="ipCards"></div>
+      <div class="tkr-wrap">
+        <div class="tkr-try"><label><input type="checkbox" id="ipNic" checked> 模擬：本機網卡在 192.168.100 網段</label></div>
+        <div class="tkr" id="ipWin">
+          <div class="tt"><span>ALL228X 出廠測試工具 v5（部分畫面）</span><span class="mock">可操作示意</span></div>
+          <fieldset>
+            <legend>網段設定</legend>
+            <div class="row">Class C 網段 192.168. <input type="text" id="tkIpC" value="100" autocomplete="off"> （只填第三段，例如 100）</div>
+            <div id="tkNic" class="nic-g">本機網卡偵測：尚未偵測</div>
+          </fieldset>
+          <fieldset class="grow">
+            <legend>待測 IP 清單（第四段，逗號分隔，支援範圍 50-53）</legend>
+            <input type="text" id="tkIpList" value="10, 50-53" autocomplete="off">
+            <div><button id="tkParse">解析並預覽</button></div>
+            <textarea id="tkPreview" readonly></textarea>
+          </fieldset>
+        </div>
+        <div class="tkr-res" id="ipRes"></div>
       </div>
     </div>
   </section>
 
   <!-- ============ 5 模式 ============ -->
-  <section class="slide" data-act="2">
+  <section id="s-mode" class="slide" data-act="2">
     <h1>選一種測試模式</h1>
-    <p class="sub">四選一，點卡片看看會跑什麼</p>
-    <div class="modes" id="modes">
-      <button class="mode" data-m="stress"><b>stress</b><span>CPU、記憶體壓力測試</span></button>
-      <button class="mode" data-m="allhicom"><b>allhicom</b><span>執行 allhicom</span></button>
-      <button class="mode" data-m="custom"><b>自訂指令</b><span>自己填一行指令</span></button>
-      <button class="mode" data-m="none"><b>不執行測試</b><span>只做設定變更</span></button>
-    </div>
-    <div class="mode-detail">
-      <div><h4>每台會依序執行</h4><div id="modeCmds"></div></div>
-      <div><h4>要注意</h4><ul id="modeNotes"></ul></div>
+    <p class="sub">在畫面上選模式、按 Start，看 Log 跑出什麼</p>
+    <div class="two-col" style="grid-template-columns:1.2fr 1fr">
+      <div class="tkr-wrap">
+        <div class="tkr-try"><label><input type="checkbox" id="mdFail"> 模擬：指令回傳錯誤碼</label></div>
+        <div class="tkr" id="mdWin">
+          <div class="tt"><span>ALL228X 出廠測試工具 v5（部分畫面）</span><span class="mock">可操作示意</span></div>
+          <fieldset>
+            <legend>測試模式</legend>
+            <label><input type="radio" name="mdMode" value="stress" checked> stress（stress --cpu 6 -&gt; stress --vm 15）</label>
+            <label><input type="radio" name="mdMode" value="allhicom"> allhicom（sudo allhicom）</label>
+            <label><input type="radio" name="mdMode" value="custom"> 自訂指令（填在下方欄位）</label>
+            <label><input type="radio" name="mdMode" value="none"> 不執行測試（只做設定變更）</label>
+          </fieldset>
+          <div class="ctrl"><button id="mdStart">Start</button><button disabled>Stop</button><span id="mdProg">進度：尚未開始</span></div>
+          <fieldset class="grow"><legend>Log</legend><textarea id="mdLog" readonly></textarea></fieldset>
+        </div>
+        <div class="tkr-res" id="mdRes"></div>
+      </div>
+      <div class="mode-detail" style="grid-template-columns:1fr;margin-top:0;align-content:start">
+        <div><h4>每台會依序執行</h4><div id="modeCmds"></div></div>
+        <div><h4>要注意</h4><ul id="modeNotes"></ul></div>
+      </div>
     </div>
   </section>
 
   <!-- ============ 6 自訂指令確認（截圖待補） ============ -->
-  <section class="slide" data-act="2">
+  <section id="s-custom" class="slide" data-act="2">
     <h1>自訂指令會先讓你確認</h1>
     <p class="sub">按 Start 後跳出確認視窗，按「否」就不會開始</p>
     <div class="two-col">
@@ -392,17 +473,37 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
         <li>指令裡有 <code>sudo</code>：設備必須設定 sudo 免密碼，否則略過那台</li>
         <li>確認無誤再按「是」</li>
       </ol>
-      <div class="shot-stack">
-        <figure class="shot"><span class="tag">① 在主畫面選自訂指令，填指令、timeout</span><img src="screenshots/06-input.png" alt="自訂指令與 timeout 欄位"></figure>
-        <figure class="shot"><span class="tag">② 按 Start，跳出確認視窗</span>
-          <div class="hl-wrap"><img class="dlg" src="screenshots/06-dialog.png" alt="確認自訂指令視窗"><span class="hl" style="left:23%;top:23.6%;width:69%;height:34%"></span></div>
-        </figure>
+      <div class="tkr-wrap">
+        <div class="tkr-try">試試看：
+          <button data-cmd="df -h &amp;&amp; free -m">填一般指令</button>
+          <button data-cmd="sudo dmesg | tail -n 5">填含 sudo 的指令</button>
+          <button data-to="abc">timeout 填錯</button>
+          <button data-cmd="">清空指令</button>
+          <label><input type="checkbox" id="cuNopass" checked> 設備有設 sudo 免密碼</label>
+        </div>
+        <div class="tkr" id="cuWin">
+          <div class="tt"><span>ALL228X 出廠測試工具 v5（部分畫面）</span><span class="mock">可操作示意</span></div>
+          <fieldset>
+            <legend>測試模式</legend>
+            <label><input type="radio" name="cuMode" value="stress"> stress（stress --cpu 6 -&gt; stress --vm 15）</label>
+            <label><input type="radio" name="cuMode" value="allhicom"> allhicom（sudo allhicom）</label>
+            <label><input type="radio" name="cuMode" value="custom" checked> 自訂指令（填在下方欄位）</label>
+            <label><input type="radio" name="cuMode" value="none"> 不執行測試（只做設定變更）</label>
+            <div class="row" style="padding-left:18px">指令：<input type="text" id="cuCmd" autocomplete="off"> timeout（分鐘）：<input type="text" id="cuTo" value="90" autocomplete="off"></div>
+          </fieldset>
+          <div class="ctrl"><button id="cuStart">Start</button><button disabled>Stop</button><span id="cuProg">進度：尚未開始</span></div>
+          <fieldset class="grow"><legend>Log</legend><textarea id="cuLog" readonly></textarea></fieldset>
+          <div class="dlg" id="cuDlg"><div class="box">
+            <div class="bt"></div><div class="bd"><span class="ic"></span><span class="tx"></span></div><div class="bb"></div>
+          </div></div>
+        </div>
+        <div class="tkr-res" id="cuRes">在指令欄填一行指令，按 Start 看看。（假設 IP 清單已解析出 2 台、帳密已填）</div>
       </div>
     </div>
   </section>
 
   <!-- ============ 7 時區鍵盤（截圖待補） ============ -->
-  <section class="slide" data-act="2">
+  <section id="s-set" class="slide" data-act="2">
     <h1>時區、鍵盤勾選才會改</h1>
     <p class="sub">沒勾就不會動到設備設定</p>
     <div class="two-col">
@@ -412,15 +513,35 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
         <li>改之前會先做檢查，改完會讀回來驗證</li>
         <li>任一步失敗：這台就停止，不跑測試、不寫結果檔</li>
       </ol>
-      <div class="shot-stack">
-        <figure class="shot"><span class="tag">勾選前</span><img src="screenshots/07-settings-before.png" alt="設定變更：勾選前"></figure>
-        <figure class="shot"><span class="tag">勾選後</span><img src="screenshots/07-settings-after.png" alt="設定變更：勾選後"></figure>
+      <div class="tkr-wrap">
+        <div class="tkr-try">試試看：
+          <button data-set="both">勾時區＋鍵盤</button>
+          <button data-set="badtz">時區填 Asia/Foo</button>
+          <button data-set="empty">勾了但值清空</button>
+          <label><input type="checkbox" id="stNopass" checked> 設備有設 sudo 免密碼</label>
+        </div>
+        <div class="tkr" id="stWin">
+          <div class="tt"><span>ALL228X 出廠測試工具 v5（部分畫面）</span><span class="mock">可操作示意</span></div>
+          <fieldset>
+            <legend>設定變更（勾選才執行，需設備 sudo 免密碼）</legend>
+            <div class="row">
+              <label><input type="checkbox" id="stTz"> 更改時區</label> <input type="text" id="stTzv" list="stTzList" value="Europe/Berlin" autocomplete="off" style="width:140px">
+              <label style="margin-left:8px"><input type="checkbox" id="stKb"> 更改鍵盤佈局</label> <input type="text" id="stKbv" list="stKbList" value="de" autocomplete="off" style="width:56px">
+            </div>
+            <label><input type="checkbox" id="stReboot" checked> 完成後重開機（鍵盤佈局需重開機才生效；僅在有勾設定變更時作用）</label>
+            <datalist id="stTzList"><option>Europe/Berlin</option><option>Asia/Taipei</option><option>UTC</option><option>Europe/London</option><option>America/New_York</option></datalist>
+            <datalist id="stKbList"><option>de</option><option>us</option><option>cn</option><option>fr</option><option>gb</option><option>jp</option></datalist>
+          </fieldset>
+          <div class="ctrl"><button id="stStart">Start</button><button disabled>Stop</button><span id="stProg">進度：尚未開始</span></div>
+          <fieldset class="grow"><legend>Log</legend><textarea id="stLog" readonly></textarea></fieldset>
+        </div>
+        <div class="tkr-res" id="stRes"></div>
       </div>
     </div>
   </section>
 
   <!-- ============ 8 流程 ============ -->
-  <section class="slide" data-act="2">
+  <section id="s-flow" class="slide" data-act="2">
     <h1>每台自動跑完這幾步</h1>
     <p class="sub">灰色虛線的步驟代表沒勾選，會直接跳過</p>
     <div class="flow-ctrl">
@@ -442,8 +563,27 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
     <p class="note" style="margin-top:10px">stress／allhicom 的指令回傳錯誤碼時<b>不會停</b>，一樣會寫結果檔，錯誤只記在 Log。</p>
   </section>
 
+  <!-- ============ v2 新增：看懂 Log ============ -->
+  <section id="s-log" class="slide" data-act="3">
+    <h1>Log：每一行開頭都標了是哪一台</h1>
+    <p class="sub" style="margin-bottom:10px">同時跑很多台，Log 會交錯。點 IP 只看那一台</p>
+    <div class="logv">
+      <div class="logv-l">
+        <div class="ipchips" id="logChips"></div>
+        <div class="tkbox biglog" id="bigLog"></div>
+      </div>
+      <div class="logv-r">
+        <div class="wcard big" id="logCard"></div>
+        <div class="res-notes" style="margin-top:0">
+          <div class="callout info">每行開頭的 <code>#001</code> 是流水號，每次按 Start 從頭算</div>
+          <div class="callout">Log 只顯示在視窗上，不會存成檔案，關掉程式前先看完</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ 9 結果檔 ============ -->
-  <section class="slide" data-act="3">
+  <section id="s-res" class="slide" data-act="3">
     <h1>結果檔：一行就是一台跑完的設備</h1>
     <p class="sub">檔名是開始時間 <code>YY-MM-DD-HHMM.txt</code>，每跑完一台就馬上寫入</p>
     <div class="res">
@@ -453,11 +593,15 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
           <button data-t="set">有做設定變更</button>
           <button data-t="custom">自訂指令</button>
         </div>
+        <div class="tkr" style="flex:none;margin-bottom:8px">
+          <div class="ctrl" style="margin:6px 10px"><button id="resStart">Start</button><span id="resProg">進度：尚未開始</span>
+            <span id="resLast" style="font-family:var(--mono);font-size:12px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1"></span></div>
+        </div>
         <div class="filewin">
           <div class="bar">26-10-19-1430.txt（範例資料）</div>
           <pre id="resPre"></pre>
         </div>
-        <p class="note">順序是跑完的先後，不是 IP 的順序。打字完成後，點任一欄位看說明。</p>
+        <p class="note">按 Start 跑一批，其中 1 台不是目標設備。順序是跑完的先後，不是 IP 的順序；跑完點任一欄位看說明。</p>
       </div>
       <div>
         <div class="explain" id="resExplain"><span class="note">點左邊任一欄位看說明</span></div>
@@ -471,7 +615,7 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
   </section>
 
   <!-- ============ 10 翻牌 ============ -->
-  <section class="slide" data-act="3">
+  <section id="s-flip" class="slide" data-act="3">
     <h1>三件最常搞錯的事</h1>
     <p class="sub">先想想看，再點卡片翻面</p>
     <div class="flips">
@@ -520,6 +664,7 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
   const stage = $("#stage");
   const slides = $$(".slide");
   const hooks = {};
+  const at = id => slides.indexOf(document.getElementById(id));
   let cur = -1;
 
   // ---------- 舞台縮放 ----------
@@ -579,7 +724,7 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
     const devs = $$(".dev", box);
     let timers = [];
     const at = (ms, fn) => timers.push(setTimeout(fn, ms));
-    hooks[0] = {
+    hooks[at("s-cover")] = {
       enter() {
         devs.forEach(d => (d.className = "dev"));
         devs.slice(0, 10).forEach((d, k) => at(300 + k * 40, () => d.classList.add("run")));
@@ -669,7 +814,7 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
       timer = setInterval(tick, TICK);
     };
     $("#raceReset").onclick = reset;
-    hooks[1] = { enter: reset, leave: stop };
+    hooks[at("s-race")] = { enter: reset, leave: stop };
   }
 
   // ---------- 2 輸送帶：連線門 → MAC 門 ----------
@@ -756,7 +901,7 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
     }
     btns.forEach(b => (b.onclick = () => send(b.dataset.send)));
     $("#beltReset").onclick = reset;
-    hooks[2] = { enter: reset, leave: reset };
+    hooks[at("s-belt")] = { enter: reset, leave: reset };
   }
 
   // ---------- 3 SmartScreen 示意圖：兩個畫面輪流 ----------
@@ -770,100 +915,10 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
     const stop = () => clearInterval(timer);
     const start = () => { stop(); show(1); timer = setInterval(() => show(win.classList.contains("step2") ? 1 : 2), 3000); };
     btns.forEach(b => b.onclick = () => { stop(); show(+b.dataset.ss); });
-    hooks[3] = { enter: start, leave: stop };
+    hooks[at("s-dl")] = { enter: start, leave: stop };
   }
 
-  // ---------- 4 IP 清單：對應 parse_ip_list() ----------
-  {
-    const isdigit = s => /^[0-9]+$/.test(s);
-    function parseIpList(classC, listText) {
-      const errors = [];
-      classC = classC.trim();
-      if (!isdigit(classC) || !(+classC >= 0 && +classC <= 255)) {
-        errors.push(`Class C 網段格式錯誤：${classC}（需為 0-255 的數字）`);
-        return [[], errors];
-      }
-      const text = listText.replaceAll("，", ",");
-      const parts = text.split(",").map(p => p.trim()).filter(Boolean);
-      if (!parts.length) {
-        errors.push("IP 清單是空的，請至少填一個");
-        return [[], errors];
-      }
-      const nums = new Set();
-      for (const p of parts) {
-        if (p.includes("-")) {
-          const seg = p.split("-").map(s => s.trim());
-          if (seg.length !== 2 || !seg.every(isdigit)) { errors.push(`範圍格式錯誤：${p}`); continue; }
-          const [a, b] = seg.map(Number);
-          if (a > b) { errors.push(`範圍寫反（起點大於終點）：${p}`); continue; }
-          if (a < 1 || b > 254) { errors.push(`超出可用範圍 1-254：${p}`); continue; }
-          for (let n = a; n <= b; n++) nums.add(n);
-        } else {
-          if (!isdigit(p)) { errors.push(`格式錯誤：${p}`); continue; }
-          const n = Number(p);
-          if (n < 1 || n > 254) { errors.push(`超出可用範圍 1-254：${p}`); continue; }
-          nums.add(n);
-        }
-      }
-      return [[...nums].sort((a, b) => a - b).map(n => `192.168.${classC}.${n}`), errors];
-    }
-
-    const inC = $("#ipC"), inL = $("#ipList"), cards = $("#ipCards");
-    let shown = new Set();
-    function update() {
-      const [ips, errors] = parseIpList(inC.value, inL.value);
-      const head = $("#ipHead");
-      $("#ipErrors").innerHTML = errors.map(e => `<li>${e.replace(/</g, "&lt;")}</li>`).join("");
-      if (errors.length) {
-        head.className = "ip-head err";
-        head.textContent = "解析發生錯誤：整份清單不採用，按 Start 會被擋下";
-      } else {
-        head.className = "ip-head";
-        head.textContent = `已解析出 ${ips.length} 個 IP`;
-      }
-      cards.classList.toggle("rejected", errors.length > 0);
-      const next = new Set(ips);
-      cards.innerHTML = ips.map(ip => {
-        const i = ip.lastIndexOf(".");
-        return `<div class="ipcard${shown.has(ip) ? "" : " new"}">${ip.slice(0, i + 1)}<b>${ip.slice(i + 1)}</b></div>`;
-      }).join("");
-      shown = next;
-    }
-    inC.oninput = inL.oninput = update;
-    $$("#ipExamples button").forEach(b => (b.onclick = () => { inL.value = b.textContent; update(); }));
-    hooks[4] = { enter() { shown = new Set(); update(); } };
-  }
-
-  // ---------- 5 測試模式 ----------
-  {
-    const cmd = (n, c) => `<div class="cmd"><i>${n}</i><span>${c}</span></div>`;
-    const MODES = {
-      stress: {
-        cmds: cmd(1, "stress --cpu 6 --timeout 900s") + cmd(2, "stress --vm 15 --vm-bytes 256M --timeout 900s"),
-        notes: ["兩道指令依序執行，第 1 道跑完才跑第 2 道", "指令回傳錯誤碼時不會停，錯誤記在 Log", "跑完寫一行到結果檔"],
-      },
-      allhicom: {
-        cmds: cmd(1, "allhicom"),
-        notes: ["畫面上的選項寫「sudo allhicom」，實際執行的是 allhicom", "指令回傳錯誤碼時不會停，錯誤記在 Log", "跑完寫一行到結果檔"],
-      },
-      custom: {
-        cmds: cmd(1, "（你在「指令」欄填的那一行）") + '<p class="note">多道指令寫在同一行，用 &amp;&amp; 或 ; 串接</p>',
-        notes: ["按 Start 後先跳確認視窗", "指令有 sudo：設備必須設定免密碼，否則略過那台", "Log 記 exit code 和 stdout 最後 20 行，失敗時附 stderr", "結果檔多一欄 rc=（exit code）"],
-      },
-      none: {
-        cmds: '<p style="font-size:17px;margin:0">不跑任何測試指令，只做「設定變更」（時區／鍵盤）</p>',
-        notes: ["一定要勾至少一項設定變更，否則按 Start 會被擋下", "設定成功才寫一行到結果檔"],
-      },
-    };
-    const btns = $$("#modes .mode");
-    function pick(m) {
-      btns.forEach(b => b.classList.toggle("on", b.dataset.m === m));
-      $("#modeCmds").innerHTML = MODES[m].cmds;
-      $("#modeNotes").innerHTML = MODES[m].notes.map(n => `<li>${n}</li>`).join("");
-    }
-    btns.forEach(b => (b.onclick = () => pick(b.dataset.m)));
-    hooks[5] = { enter: () => pick("stress") };
-  }
+  // 第 4、5 頁（填 IP、測試模式）的互動改到下方 v2 區塊
 
   // ---------- 8 每台流程 ----------
   {
@@ -965,7 +1020,7 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
     [mode, setChk, rbChk].forEach(c => (c.onchange = reset));
     $("#flRun").onclick = () => run(null);
     $("#flFail").onclick = () => run(failAt.value);
-    hooks[8] = {
+    hooks[at("s-flow")] = {
       enter() { mode.value = "stress"; setChk.checked = false; rbChk.checked = true; reset(); },
       leave() { gen++; },
     };
@@ -1004,27 +1059,61 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
     const pre = $("#resPre"), explain = $("#resExplain");
     let timer = null;
 
-    function type(key) {
+    let gen = 0;
+    const SKIP_IP = "192.168.100.9";
+    const ipOf = r => `192.168.100.${+r[0][0].split("-").pop()}`;
+
+    function show(key) {
+      gen++;
       clearInterval(timer);
       $$("#resTabs button").forEach(b => b.classList.toggle("on", b.dataset.t === key));
-      explain.innerHTML = '<span class="note">點左邊任一欄位看說明</span>';
+      explain.innerHTML = '<span class="note">按上方 Start，跑完點檔案裡任一欄位看說明</span>';
       pre.innerHTML = "";
-      const segs = FILES[key].flatMap((r, i) => (i ? [["\n", null], ...r] : r));
+      $("#resProg").textContent = "進度：尚未開始";
+      $("#resLast").textContent = "";
+      $("#resStart").disabled = false;
+      resKey = key;
+    }
+    let resKey = "test";
+
+    // 按 Start：每跑完一台就寫一行；不是目標設備的那台只有進度 +1、檔案不會多一行
+    async function run() {
+      show(resKey);
+      const my = gen, rows = FILES[resKey];
+      const label = resKey === "custom" ? LBL.custom : LBL.stress;
+      const order = [rows[0], null, ...rows.slice(1)];
+      const total = order.length;
+      $("#resStart").disabled = true;
+      $("#resProg").textContent = `進度：0/${total}`;
       const caret = Object.assign(document.createElement("span"), { className: "caret", textContent: " " });
       pre.append(caret);
-      let si = 0, ci = 0, span = null;
-      timer = setInterval(() => {
-        if (si >= segs.length) { clearInterval(timer); caret.remove(); return; }
-        const [text, field] = segs[si];
-        if (!span) {
-          span = document.createElement("span");
-          if (field) { span.className = "f"; span.dataset.f = field; }
-          pre.insertBefore(span, caret);
+      for (const [k, r] of order.entries()) {
+        await sleep(700);
+        if (my !== gen) return;
+        if (!r) {
+          $("#resLast").textContent = `[${SKIP_IP}] MAC 不符合 00:0f:c9 開頭，略過。`;
+        } else {
+          if (pre.querySelector(".f")) pre.insertBefore(document.createTextNode("\n"), caret);
+          for (const [text, field] of r) {
+            const span = document.createElement("span");
+            if (field) { span.className = "f"; span.dataset.f = field; }
+            pre.insertBefore(span, caret);
+            for (const ch of text) {
+              span.textContent += ch;
+              await sleep(22);
+              if (my !== gen) return;
+            }
+          }
+          $("#resLast").textContent = `[${ipOf(r)}] ${label} 全部執行完畢，寫入記錄檔`;
         }
-        span.textContent += text[ci++];
-        if (ci >= text.length) { si++; ci = 0; span = null; }
-      }, 28);
+        $("#resProg").textContent = `進度：${k + 1}/${total}`;
+      }
+      caret.remove();
+      $("#resLast").textContent = "全部設備處理完畢";
+      $("#resStart").disabled = false;
+      explain.innerHTML = `<h4>${total} 台處理完，檔案只有 ${rows.length} 行</h4>少的那台不是目標設備，被略過了，原因在 Log。<br><span class="note">點左邊檔案裡任一欄位看說明</span>`;
     }
+    $("#resStart").onclick = run;
     pre.onclick = e => {
       const f = e.target.closest(".f");
       if (!f) return;
@@ -1032,15 +1121,475 @@ h1{font-size:36px;margin:0 0 6px;letter-spacing:.5px}
       const [t, d] = INFO[f.dataset.f];
       explain.innerHTML = `<h4>${t}</h4>${d}`;
     };
-    $$("#resTabs button").forEach(b => (b.onclick = () => type(b.dataset.t)));
-    hooks[9] = { enter: () => type("test"), leave: () => clearInterval(timer) };
+    $$("#resTabs button").forEach(b => (b.onclick = () => show(b.dataset.t)));
+    hooks[at("s-res")] = { enter: () => show("test"), leave: () => { gen++; } };
   }
 
   // ---------- 10 翻牌 ----------
   {
     const flips = $$(".flip");
     flips.forEach(f => (f.onclick = () => f.classList.toggle("on")));
-    hooks[10] = { enter: () => flips.forEach(f => f.classList.remove("on")) };
+    hooks[at("s-flip")] = { enter: () => flips.forEach(f => f.classList.remove("on")) };
+  }
+
+  // ================= v2：共用資料 =================
+  const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const LBL = {
+    stress: "stress（stress --cpu 6 -> stress --vm 15）",
+    allhicom: "allhicom（sudo allhicom）",
+    custom: "自訂指令（填在下方欄位）",
+    none: "不執行測試（只做設定變更）",
+  };
+  const IPS = [10, 50, 51, 52, 53].map(n => `192.168.100.${n}`);
+  const RESULT_NAME = "26-10-19-1430.txt";
+
+  // 範例批次：5 個 IP，.51 不是目標設備、.52 連不上（Log 文字照 v5 原文，順序為示意）
+  const MAC = { 10: "00:0f:c9:00:00:01", 50: "00:0f:c9:00:00:02", 53: "00:0f:c9:00:00:05" };
+  const START_LINE = `開始測試，共 ${IPS.length} 個目標，模式：${LBL.stress}，結果檔：（exe 所在資料夾）\\${RESULT_NAME}`;
+  const EVENTS = [
+    [10, `確認為目標設備，MAC=${MAC[10]}，開始執行模式：${LBL.stress}`],
+    [50, `確認為目標設備，MAC=${MAC[50]}，開始執行模式：${LBL.stress}`],
+    [51, "MAC 不符合 00:0f:c9 開頭，略過。讀到的 MAC：['b8:27:eb:00:00:09']", 1],
+    [53, `確認為目標設備，MAC=${MAC[53]}，開始執行模式：${LBL.stress}`],
+    [52, "第 1/10 次連線失敗：（錯誤訊息）"],
+    [10, "執行第 1 道指令：stress --cpu 6 --timeout 900s"],
+    [50, "執行第 1 道指令：stress --cpu 6 --timeout 900s"],
+    [53, "執行第 1 道指令：stress --cpu 6 --timeout 900s"],
+    [52, "第 2/10 次連線失敗：（錯誤訊息）"],
+    { omit: "…（192.168.100.52 第 3～9 次連線失敗，示意圖省略）", skip: 7 },
+    [52, "第 10/10 次連線失敗：（錯誤訊息）"],
+    [52, "SSH 連線失敗，放棄此設備", 1],
+    [10, "執行第 2 道指令：stress --vm 15 --vm-bytes 256M --timeout 900s"],
+    [50, "執行第 2 道指令：stress --vm 15 --vm-bytes 256M --timeout 900s"],
+    [53, "執行第 2 道指令：stress --vm 15 --vm-bytes 256M --timeout 900s"],
+    [10, `${LBL.stress} 全部執行完畢，寫入記錄檔`, 1],
+    [50, `${LBL.stress} 全部執行完畢，寫入記錄檔`, 1],
+    [53, `${LBL.stress} 全部執行完畢，寫入記錄檔`, 1],
+  ];
+  // 把範例批次展開成 Log 行；每一步回傳 {log, progress, done}
+  function* runSteps() {
+    const log = [{ n: 1, t: START_LINE }];
+    let n = 1, done = 0;
+    yield { log: [...log], progress: `0/${IPS.length}`, done: false };
+    for (const ev of EVENTS) {
+      if (ev.omit) { log.push({ omit: ev.omit }); n += ev.skip; }
+      else {
+        log.push({ n: ++n, ip: `192.168.100.${ev[0]}`, t: `[192.168.100.${ev[0]}] ${ev[1]}` });
+        if (ev[2]) done++;
+      }
+      yield { log: [...log], progress: `${done}/${IPS.length}`, done: false };
+    }
+    log.push({ n: ++n, t: "全部設備處理完畢" });
+    yield { log: [...log], progress: `${done}/${IPS.length}`, done: true };
+  }
+  const FINAL = [...runSteps()].pop();
+
+  // ---------- v2 看懂 Log ----------
+  {
+    const OUT = {
+      "192.168.100.10": ["ok", "跑完", "結果檔寫入：<code>ALL228X-01,00:0f:c9:00:00:01</code>"],
+      "192.168.100.50": ["ok", "跑完", "結果檔寫入：<code>ALL228X-02,00:0f:c9:00:00:02</code>"],
+      "192.168.100.51": ["bad", "MAC 不是 00:0f:c9 開頭：不是目標設備，略過", "結果檔沒有這台"],
+      "192.168.100.52": ["bad", "SSH 連線 10 次都失敗，放棄", "結果檔沒有這台"],
+      "192.168.100.53": ["ok", "跑完", "結果檔寫入：<code>ALL228X-05,00:0f:c9:00:00:05</code>"],
+    };
+    const chips = $("#logChips"), logEl = $("#bigLog"), card = $("#logCard");
+    chips.innerHTML = `<button data-ip="">全部</button>` + IPS.map(ip => `<button data-ip="${ip}">.${ip.split(".").pop()}</button>`).join("");
+    logEl.innerHTML = FINAL.log.map(l =>
+      l.omit ? `<div class="ln omit" data-ip="192.168.100.52">${esc(l.omit)}</div>`
+             : `<div class="ln" data-ip="${l.ip || ""}">${esc(`#${String(l.n).padStart(3, "0")} ${l.t}`)}</div>`).join("");
+    function pick(ip) {
+      $$("button", chips).forEach(b => b.classList.toggle("on", b.dataset.ip === ip));
+      $$(".ln", logEl).forEach(n => {
+        n.classList.toggle("dim", !!ip && !!n.dataset.ip && n.dataset.ip !== ip);
+        n.classList.toggle("mark", !!ip && n.dataset.ip === ip);
+      });
+      if (!ip) {
+        card.innerHTML = `<h4>這一批的結果</h4><ul>
+          <li>5 個 IP，結果檔只有 <b>3 行</b></li><li>少的 2 台：.51 不是目標設備、.52 連不上</li>
+          <li>行數比 IP 少 → 點 IP 看是哪台、什麼原因</li><li>Log 不會存檔，關程式前先看完</li></ul>`;
+      } else {
+        const [cls, what, res] = OUT[ip];
+        card.innerHTML = `<h4>${ip}</h4><p class="tk-${cls}" style="font-weight:600">${what}</p><p style="margin:0">${res}</p>`;
+      }
+    }
+    chips.onclick = e => { const b = e.target.closest("button"); if (b) pick(b.dataset.ip); };
+    hooks[at("s-log")] = { enter: () => pick("") };
+  }
+
+  // ---------- v2 自訂指令：可操作的畫面片段（檢查與訊息照 v5 on_start／process_one_device） ----------
+  {
+    const win = $("#cuWin"), cmdIn = $("#cuCmd"), toIn = $("#cuTo"), logEl = $("#cuLog"), res = $("#cuRes"), dlgEl = $("#cuDlg");
+    const DEMO_IPS = ["192.168.100.10", "192.168.100.11"];
+    let gen = 0, n = 0;
+
+    function dialog(kind, title, text) {
+      return new Promise(resolve => {
+        $(".bt", dlgEl).textContent = title;
+        $(".ic", dlgEl).textContent = kind === "warn" ? "⚠️" : "❓";
+        $(".tx", dlgEl).textContent = text;
+        const bb = $(".bb", dlgEl);
+        bb.innerHTML = "";
+        (kind === "warn" ? [["確定", true]] : [["是(Y)", true], ["否(N)", false]]).forEach(([t, v]) => {
+          const b = document.createElement("button");
+          b.textContent = t;
+          b.onclick = () => { dlgEl.classList.remove("show"); resolve(v); };
+          bb.append(b);
+        });
+        dlgEl.classList.add("show");
+      });
+    }
+    const say = (cls, html) => { res.className = "tkr-res" + (cls ? " " + cls : ""); res.innerHTML = html; };
+    const log = msg => { logEl.value += `#${String(++n).padStart(3, "0")} ${msg}\n`; logEl.scrollTop = logEl.scrollHeight; };
+    const mark = el => { el.classList.add("hl"); el.focus(); setTimeout(() => el.classList.remove("hl"), 1500); };
+
+    function reset() {
+      gen++; n = 0;
+      logEl.value = "";
+      $("#cuProg").textContent = "進度：尚未開始";
+      $("#cuStart").disabled = false;
+      dlgEl.classList.remove("show");
+    }
+
+    $("#cuStart").onclick = async () => {
+      const mode = $$("[name=cuMode]").find(r => r.checked).value;
+      if (mode === "none") {
+        await dialog("warn", "提醒", "測試模式選了「不執行測試」，又沒勾任何設定變更，沒有事情可做");
+        return say("warn", "被擋下：這頁沒勾設定變更，選「不執行測試」就沒有事情可做。");
+      }
+      if (mode !== "custom") {
+        reset();
+        log(`開始測試，共 ${DEMO_IPS.length} 個目標，模式：${LBL[mode]}，結果檔：（exe 所在資料夾）\\${RESULT_NAME}`);
+        return say("", "其他模式<b>不會</b>跳確認視窗，按 Start 就直接開始。只有自訂指令會先確認。");
+      }
+      const cmd = cmdIn.value.split("\n").join(" ").trim();
+      if (!cmd) {
+        await dialog("warn", "提醒", "選了「自訂指令」，但指令欄位是空的");
+        mark(cmdIn);
+        return say("warn", "被擋下：指令欄是空的，還沒開始。");
+      }
+      const toText = toIn.value.trim() || "90";
+      if (!/^[0-9]+$/.test(toText) || +toText <= 0) {
+        await dialog("warn", "提醒", `timeout 格式錯誤：${toText}（需為正整數，單位分鐘）`);
+        mark(toIn);
+        return say("warn", "被擋下：timeout 要填正整數（分鐘），還沒開始。");
+      }
+      const to = +toText;
+      const yes = await dialog("ask", "確認自訂指令",
+        `將對 ${DEMO_IPS.length} 個 IP 中的目標設備執行：\n\n${cmd}\n\ntimeout：${to} 分鐘\n\n確定要繼續嗎？`);
+      if (!yes) return say("", "按了「否」：沒有開始，Log 沒有任何變化。");
+
+      reset();
+      const my = gen;
+      const needSudo = /\bsudo\b/.test(cmd), nopass = $("#cuNopass").checked;
+      $("#cuStart").disabled = true;
+      say("", "執行中…");
+      log(`開始測試，共 ${DEMO_IPS.length} 個目標，模式：${LBL.custom}，結果檔：（exe 所在資料夾）\\${RESULT_NAME}`);
+      log(`自訂指令：${cmd}，timeout ${to} 分鐘`);
+      $("#cuProg").textContent = `進度：0/${DEMO_IPS.length}`;
+      let done = 0, written = 0;
+      for (const [i, ip] of DEMO_IPS.entries()) {
+        const L = m => log(`[${ip}] ${m}`);
+        await sleep(500); if (my !== gen) return;
+        L(`確認為目標設備，MAC=00:0f:c9:00:00:0${i + 1}，開始執行模式：${LBL.custom}`);
+        await sleep(500); if (my !== gen) return;
+        if (needSudo && !nopass) {
+          L("自訂指令含 sudo，但 sudo 需要密碼或權限不足，略過此設備");
+        } else {
+          L(`執行自訂指令：${cmd}（timeout ${to} 分鐘）`);
+          await sleep(900); if (my !== gen) return;
+          L("自訂指令 exit code=0");
+          L("stdout（最後 1 行）：\n（指令輸出）");
+          L(`${LBL.custom} 全部執行完畢，寫入記錄檔`);
+          written++;
+        }
+        $("#cuProg").textContent = `進度：${++done}/${DEMO_IPS.length}`;
+      }
+      log("全部設備處理完畢");
+      $("#cuStart").disabled = false;
+      if (written) say("ok", `跑完：結果檔寫入 ${written} 行，每行最後多一欄 <code>rc=0</code>（exit code）。`);
+      else say("bad", "2 台都被略過：指令有 sudo，但設備沒設 sudo 免密碼。<b>結果檔不會有這 2 台。</b>");
+    };
+
+    $$("#s-custom .tkr-try button").forEach(b => (b.onclick = () => {
+      if (b.dataset.to !== undefined) toIn.value = b.dataset.to;
+      else { cmdIn.value = b.dataset.cmd; if (toIn.value === "abc") toIn.value = "90"; }
+      $$("[name=cuMode]").find(r => r.value === "custom").checked = true;
+    }));
+    hooks[at("s-custom")] = {
+      enter() { reset(); cmdIn.value = ""; toIn.value = "90"; $("#cuNopass").checked = true; $$("[name=cuMode]").find(r => r.value === "custom").checked = true; say("", "在指令欄填一行指令，按 Start 看看。（假設 IP 清單已解析出 2 台、帳密已填）"); },
+      leave() { gen++; },
+    };
+  }
+
+  // ---------- v2 可操作畫面片段的共用工具 ----------
+  // tkinter messagebox：在 win 裡疊一個視窗，回傳 Promise（warn → true；ask → 是 true／否 false）
+  function tkDialog(win) {
+    win.insertAdjacentHTML("beforeend", '<div class="dlg"><div class="box"><div class="bt"></div><div class="bd"><span class="ic"></span><span class="tx"></span></div><div class="bb"></div></div></div>');
+    const el = win.lastElementChild;
+    const open = (kind, title, text) => new Promise(resolve => {
+      $(".bt", el).textContent = title;
+      $(".ic", el).textContent = kind === "warn" ? "⚠️" : "❓";
+      $(".tx", el).textContent = text;
+      const bb = $(".bb", el);
+      bb.innerHTML = "";
+      (kind === "warn" ? [["確定", true]] : [["是(Y)", true], ["否(N)", false]]).forEach(([t, v]) => {
+        const b = document.createElement("button");
+        b.textContent = t;
+        b.onclick = () => { el.classList.remove("show"); resolve(v); };
+        bb.append(b);
+      });
+      el.classList.add("show");
+    });
+    open.close = () => el.classList.remove("show");
+    return open;
+  }
+  // Log 視窗：每行前面加 #001 這樣的編號（同 _append_log）
+  function tkLogger(ta) {
+    let n = 0;
+    const log = msg => { ta.value += `#${String(++n).padStart(3, "0")} ${msg}\n`; ta.scrollTop = ta.scrollHeight; };
+    log.clear = () => { n = 0; ta.value = ""; };
+    return log;
+  }
+  function tkSay(el, cls, html) { el.className = "tkr-res" + (cls ? " " + cls : ""); el.innerHTML = html; }
+  const START_OF = (n, mode) => `開始測試，共 ${n} 個目標，模式：${LBL[mode]}，結果檔：（exe 所在資料夾）\\${RESULT_NAME}`;
+
+  // ---------- v2 填 IP：可操作的網段＋IP 清單（同 v5 parse_ip_list／on_parse_preview） ----------
+  {
+    const isdigit = s => /^[0-9]+$/.test(s);
+    function parseIpList(classC, listText) {
+      const errors = [];
+      classC = classC.trim();
+      if (!isdigit(classC) || !(+classC >= 0 && +classC <= 255)) {
+        errors.push(`Class C 網段格式錯誤：${classC}（需為 0-255 的數字）`);
+        return [[], errors];
+      }
+      const parts = listText.replaceAll("，", ",").split(",").map(p => p.trim()).filter(Boolean);
+      if (!parts.length) {
+        errors.push("IP 清單是空的，請至少填一個");
+        return [[], errors];
+      }
+      const nums = new Set();
+      for (const p of parts) {
+        if (p.includes("-")) {
+          const seg = p.split("-").map(s => s.trim());
+          if (seg.length !== 2 || !seg.every(isdigit)) { errors.push(`範圍格式錯誤：${p}`); continue; }
+          const [a, b] = seg.map(Number);
+          if (a > b) { errors.push(`範圍寫反（起點大於終點）：${p}`); continue; }
+          if (a < 1 || b > 254) { errors.push(`超出可用範圍 1-254：${p}`); continue; }
+          for (let n = a; n <= b; n++) nums.add(n);
+        } else {
+          if (!isdigit(p)) { errors.push(`格式錯誤：${p}`); continue; }
+          const n = Number(p);
+          if (n < 1 || n > 254) { errors.push(`超出可用範圍 1-254：${p}`); continue; }
+          nums.add(n);
+        }
+      }
+      return [[...nums].sort((a, b) => a - b).map(n => `192.168.${classC}.${n}`), errors];
+    }
+
+    const inC = $("#tkIpC"), inL = $("#tkIpList"), pv = $("#tkPreview"), nic = $("#tkNic"), res = $("#ipRes");
+    let parsed = [], parsedKey = null;
+    const key = () => inC.value + "|" + inL.value;
+
+    $("#tkParse").onclick = () => {
+      const c = inC.value.trim();
+      const [ips, errors] = parseIpList(inC.value, inL.value);
+      parsed = errors.length ? [] : ips;
+      parsedKey = key();
+      pv.value = errors.length ? "解析發生錯誤：\n" + errors.join("\n") + "\n" : `已解析出 ${ips.length} 個 IP：\n` + ips.join("\n");
+      const found = isdigit(c) && c === "100" && $("#ipNic").checked;
+      nic.textContent = found
+        ? `本機網卡偵測：✔ 偵測到本機在 192.168.${c}.0/24（本機 IP）`
+        : `本機網卡偵測：✘ 沒偵測到本機網卡在 192.168.${c}.0/24，請確認網卡設定是否正確`;
+      nic.className = found ? "nic-ok" : "nic-bad";
+      if (errors.length) tkSay(res, "bad", "清單有錯：<b>整份不採用</b>。這時按 Start 會跳「請先按「解析並預覽」，確認 IP 清單無誤後再開始」。");
+      else if (!found) tkSay(res, "warn", `已解析出 ${ips.length} 個 IP，但網卡偵測是紅字：按 Start 會再跳警告，問你要不要繼續。`);
+      else tkSay(res, "ok", `已解析出 ${ips.length} 個 IP，網卡也在這個網段。按 Start 就用這份清單。`);
+    };
+    inC.oninput = inL.oninput = () => {
+      if (parsedKey === null || key() === parsedKey) return;
+      if (parsed.length) tkSay(res, "warn", `清單改過了，還沒重新解析：現在按 Start，用的還是上一次的 ${parsed.length} 個 IP。`);
+      else tkSay(res, "", "改完按「解析並預覽」。");
+    };
+    $$("#ipExamples button").forEach(b => (b.onclick = () => { inL.value = b.textContent; inL.oninput(); }));
+    hooks[at("s-ip")] = {
+      enter() {
+        inC.value = "100"; inL.value = "10, 50-53"; pv.value = ""; parsed = []; parsedKey = null;
+        $("#ipNic").checked = true;
+        nic.textContent = "本機網卡偵測：尚未偵測"; nic.className = "nic-g";
+        tkSay(res, "", "按「解析並預覽」看看。也可以點左邊的範例、改網段，或取消勾選上面的網卡。");
+      },
+    };
+  }
+
+  // ---------- v2 測試模式：選模式＋Start，看 Log ----------
+  {
+    const cmd = (n, c) => `<div class="cmd"><i>${n}</i><span>${c}</span></div>`;
+    const MODES = {
+      stress: {
+        cmds: cmd(1, "stress --cpu 6 --timeout 900s") + cmd(2, "stress --vm 15 --vm-bytes 256M --timeout 900s"),
+        notes: ["兩道指令依序執行，第 1 道跑完才跑第 2 道", "指令回傳錯誤碼時不會停，錯誤記在 Log", "跑完寫一行到結果檔"],
+      },
+      allhicom: {
+        cmds: cmd(1, "allhicom"),
+        notes: ["畫面上的選項寫「sudo allhicom」，實際執行的是 allhicom", "指令回傳錯誤碼時不會停，錯誤記在 Log", "跑完寫一行到結果檔"],
+      },
+      custom: {
+        cmds: cmd(1, "（你在「指令」欄填的那一行）") + '<p class="note">多道指令寫在同一行，用 &amp;&amp; 或 ; 串接</p>',
+        notes: ["按 Start 後先跳確認視窗", "指令有 sudo：設備必須設定免密碼，否則略過那台", "Log 記 exit code 和 stdout 最後 20 行，失敗時附 stderr", "結果檔多一欄 rc=（exit code）"],
+      },
+      none: {
+        cmds: '<p style="font-size:17px;margin:0">不跑任何測試指令，只做「設定變更」（時區／鍵盤）</p>',
+        notes: ["一定要勾至少一項設定變更，否則按 Start 會被擋下", "設定成功才寫一行到結果檔"],
+      },
+    };
+    const COMMANDS = { stress: ["stress --cpu 6 --timeout 900s", "stress --vm 15 --vm-bytes 256M --timeout 900s"], allhicom: ["allhicom"] };
+    const radios = $$("[name=mdMode]"), res = $("#mdRes");
+    const dialog = tkDialog($("#mdWin")), log = tkLogger($("#mdLog"));
+    const IP = "192.168.100.10";
+    let gen = 0;
+    const mode = () => radios.find(r => r.checked).value;
+
+    function pick(m) {
+      $("#modeCmds").innerHTML = MODES[m].cmds;
+      $("#modeNotes").innerHTML = MODES[m].notes.map(n => `<li>${n}</li>`).join("");
+    }
+    radios.forEach(r => (r.onchange = () => pick(r.value)));
+
+    $("#mdStart").onclick = async () => {
+      const m = mode();
+      if (m === "none") {
+        await dialog("warn", "提醒", "測試模式選了「不執行測試」，又沒勾任何設定變更，沒有事情可做");
+        return tkSay(res, "warn", "被擋下：「不執行測試」一定要搭配設定變更（時區／鍵盤）。");
+      }
+      if (m === "custom") {
+        await dialog("warn", "提醒", "選了「自訂指令」，但指令欄位是空的");
+        return tkSay(res, "warn", "被擋下：自訂指令要先填指令。下一頁可以實際操作。");
+      }
+      const my = ++gen, fail = $("#mdFail").checked;
+      const L = msg => log(`[${IP}] ${msg}`);
+      $("#mdStart").disabled = true;
+      log.clear();
+      tkSay(res, "", "執行中…（示意已加速，實際每道指令有自己的執行時間）");
+      log(START_OF(1, m));
+      $("#mdProg").textContent = "進度：0/1";
+      await sleep(500); if (my !== gen) return;
+      L(`確認為目標設備，MAC=00:0f:c9:00:00:01，開始執行模式：${LBL[m]}`);
+      for (const [i, c] of COMMANDS[m].entries()) {
+        await sleep(400); if (my !== gen) return;
+        L(`執行第 ${i + 1} 道指令：${c}`);
+        await sleep(1200); if (my !== gen) return;
+        if (fail) L(`第 ${i + 1} 道指令 exit code=1，錯誤：（錯誤訊息）`);
+      }
+      L(`${LBL[m]} 全部執行完畢，寫入記錄檔`);
+      $("#mdProg").textContent = "進度：1/1";
+      log("全部設備處理完畢");
+      $("#mdStart").disabled = false;
+      tkSay(res, "ok", fail
+        ? "指令回傳錯誤碼也<b>不會停</b>，一樣寫入結果檔，錯誤只記在 Log。所以結果檔有這一行，不等於測試通過。"
+        : "跑完：結果檔寫入 1 行（hostname,MAC）。");
+    };
+    hooks[at("s-mode")] = {
+      enter() {
+        gen++; log.clear(); dialog.close();
+        radios.find(r => r.value === "stress").checked = true; $("#mdFail").checked = false;
+        $("#mdProg").textContent = "進度：尚未開始"; $("#mdStart").disabled = false;
+        pick("stress");
+        tkSay(res, "", "選一個模式按 Start。（假設 IP 已解析出 1 台、帳密已填）");
+      },
+      leave() { gen++; },
+    };
+  }
+
+  // ---------- v2 時區、鍵盤：勾選＋Start（同 v5 _collect_settings／apply_settings） ----------
+  {
+    const TIMEZONE_PATTERN = /^[A-Za-z0-9_+\-]+(\/[A-Za-z0-9_+\-]+)*$/;
+    const LAYOUT_PATTERN = /^[A-Za-z0-9_\-]+$/;
+    // 模擬設備上有的資源檔；不在清單裡的值會走「缺少本機資源檔」
+    const KNOWN_TZ = new Set(["Europe/Berlin", "Asia/Taipei", "UTC", "Europe/London", "America/New_York"]);
+    try { Intl.supportedValuesOf("timeZone").forEach(z => KNOWN_TZ.add(z)); } catch (e) {}
+    const KNOWN_KB = new Set(["de", "us", "cn", "fr", "gb", "jp"]);
+    const tzC = $("#stTz"), tzV = $("#stTzv"), kbC = $("#stKb"), kbV = $("#stKbv"), rbC = $("#stReboot"), res = $("#stRes");
+    const dialog = tkDialog($("#stWin")), log = tkLogger($("#stLog"));
+    const IP = "192.168.100.10", HOST = "ALL228X-01", MAC = "00:0f:c9:00:00:01";
+    let gen = 0, dev;
+    const pyStr = v => (v === null ? "None" : v);
+
+    function collect() {
+      const tz = tzC.checked ? tzV.value.trim() : null;
+      const layout = kbC.checked ? kbV.value.trim() : null;
+      if (!tz && !layout) return [null, tzC.checked || kbC.checked ? "已勾選設定變更，但目標值是空的" : null];
+      if (tz && !TIMEZONE_PATTERN.test(tz)) return [null, `時區格式錯誤：${tz}（例如 Europe/Berlin）`];
+      if (layout && !LAYOUT_PATTERN.test(layout)) return [null, `鍵盤佈局格式錯誤：${layout}（例如 de）`];
+      return [{ tz, layout, reboot: rbC.checked }, null];
+    }
+
+    $("#stStart").onclick = async () => {
+      const [st, err] = collect();
+      if (err) {
+        await dialog("warn", "提醒", err);
+        return tkSay(res, "warn", "被擋下：勾了就要填值，還沒開始。");
+      }
+      if (!st) {
+        await dialog("warn", "提醒", "測試模式選了「不執行測試」，又沒勾任何設定變更，沒有事情可做");
+        return tkSay(res, "warn", "沒勾任何一項：這頁的測試模式是「不執行測試」，所以被擋下。選 stress 等模式時，沒勾就只跑測試、不動設定。");
+      }
+      const items = [];
+      if (st.tz) items.push(`時區 → ${st.tz}`);
+      if (st.layout) items.push(`鍵盤 → ${st.layout}`);
+      if (st.reboot) items.push("完成後重開機");
+      if (!(await dialog("ask", "確認設定變更", `將對 1 個 IP 中的目標設備做以下變更：\n\n${items.join("\n")}\n\n確定要繼續嗎？`)))
+        return tkSay(res, "", "按了「否」：沒有開始，設備設定沒有任何改變。");
+
+      const my = ++gen;
+      const L = msg => log(`[${IP}] ${msg}`);
+      const step = async ms => { await sleep(ms); return my === gen; };
+      const stop = why => { $("#stProg").textContent = "進度：1/1"; log("全部設備處理完畢"); $("#stStart").disabled = false;
+        tkSay(res, "bad", `這台停止：<b>不跑測試、不寫結果檔</b>。原因：${why}`); };
+      $("#stStart").disabled = true;
+      log.clear();
+      tkSay(res, "", "執行中…");
+      log(START_OF(1, "none"));
+      log(`設定變更：時區=${st.tz || "不變"}，鍵盤=${st.layout || "不變"}，重開機=${st.reboot ? "是" : "否"}`);
+      $("#stProg").textContent = "進度：0/1";
+      if (!(await step(500))) return;
+      L(`確認為目標設備，MAC=${MAC}，開始執行模式：${LBL.none}`);
+      if (!(await step(500))) return;
+      if (!$("#stNopass").checked) { L("sudo 需要密碼或權限不足，無法變更設定，略過此設備"); return stop("設備沒設 sudo 免密碼。"); }
+      if ((st.tz && !KNOWN_TZ.has(st.tz)) || (st.layout && !KNOWN_KB.has(st.layout))) {
+        L(`設備缺少本機資源檔（zoneinfo '${pyStr(st.tz)}' 或 xkb layout '${pyStr(st.layout)}'），略過此設備`);
+        return stop("設備上沒有這個時區或鍵盤佈局。改之前就先檢查，所以什麼都沒改。");
+      }
+      if (st.tz) { if (!(await step(600))) return; dev.tz = st.tz; L(`時區已設為 ${st.tz}`); }
+      if (st.layout) { if (!(await step(900))) return; dev.kb = st.layout; L(`鍵盤佈局已設為 ${st.layout}`); }
+      if (!(await step(400))) return;
+      L(`驗證：時區=${dev.tz} | 鍵盤=XKBLAYOUT="${dev.kb}"`);
+      const extra = [st.tz && `tz=${st.tz}`, st.layout && `kb=${st.layout}`].filter(Boolean).join(",");
+      L(`${LBL.none} 全部執行完畢，寫入記錄檔`);
+      if (st.reboot) L("已送出重開機指令");
+      $("#stProg").textContent = "進度：1/1";
+      log("全部設備處理完畢");
+      $("#stStart").disabled = false;
+      tkSay(res, "ok", `改完讀回驗證通過。結果檔寫入：<code>${HOST},${MAC},${extra}</code>` +
+        (st.reboot ? "，並送出重開機。" : "。沒有重開機：鍵盤佈局要重開機才生效。"));
+    };
+
+    $$("#s-set .tkr-try button").forEach(b => (b.onclick = () => {
+      const k = b.dataset.set;
+      if (k === "both") { tzC.checked = kbC.checked = true; tzV.value = "Europe/Berlin"; kbV.value = "de"; }
+      if (k === "badtz") { tzC.checked = true; tzV.value = "Asia/Foo"; }
+      if (k === "empty") { tzC.checked = true; kbC.checked = false; tzV.value = ""; }
+    }));
+    hooks[at("s-set")] = {
+      enter() {
+        gen++; log.clear(); dialog.close(); dev = { tz: "UTC", kb: "us" };
+        tzC.checked = kbC.checked = false; tzV.value = "Europe/Berlin"; kbV.value = "de"; rbC.checked = true; $("#stNopass").checked = true;
+        $("#stProg").textContent = "進度：尚未開始"; $("#stStart").disabled = false;
+        tkSay(res, "", "先什麼都不勾，按 Start 看看；再勾時區或鍵盤試一次。（假設測試模式選「不執行測試」、模擬設備原本是 UTC／us）");
+      },
+      leave() { gen++; },
+    };
   }
 
   go(parseInt(location.hash.slice(1), 10) || 0);
